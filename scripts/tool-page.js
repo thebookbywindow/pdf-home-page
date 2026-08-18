@@ -279,7 +279,7 @@
 
   function renderQuotaTooltip(el, Q) {
     if (!el) return;
-    const data = Q.getQuotaRules();
+    const data = Q.getQuotaRules(document.body?.dataset?.toolSlug || "");
     const Modals = global.WPSQuotaModals;
     el.innerHTML = Modals?.renderQuotaTooltipHTML
       ? Modals.renderQuotaTooltipHTML(data)
@@ -317,6 +317,7 @@
     const etaProfile = config.etaProfile || "pdf";
     const autoProcessAfterUpload = config.autoProcessAfterUpload !== false;
     const sharedPipeline = Boolean(config.sharedPipeline);
+    const singleFile = Boolean(config.singleFile);
     const UPLOAD_PORTION = 0.35;
     const batchActionLabel = config.batchActionLabel
       || (config.mode === "compress" ? "Compress" : "Convert");
@@ -333,6 +334,10 @@
           : etaProfile === "bim"
             ? "Typical BIM conversion takes about 1–10 min. Please keep this tab open."
             : "");
+
+    if (singleFile && els.fileInput) {
+      els.fileInput.removeAttribute("multiple");
+    }
 
     function estimateProcessSeconds(file) {
       if (config.mode === "compress") {
@@ -543,7 +548,7 @@
       syncWorkspaceBackVisible();
     }
 
-    function updateProgressUI({ percent, eta, phase }) {
+    function updateProgressUI({ percent, eta, phase, detail }) {
       els.progressBar.style.width = percent + "%";
       els.progressPercent.textContent = percent + "%";
       if (els.progressEta) {
@@ -551,12 +556,12 @@
         els.progressEta.classList.add("progress-eta");
       }
       els.progressPhase.textContent = phase;
-      const inProcessPhase = phase && /compress|convert|process/i.test(phase) && !/^upload/i.test(phase);
+      const inProcessPhase = phase && /compress|convert|process|upload|verif|task|fetch/i.test(phase);
       els.processingPanel?.classList.toggle("is-long-running", longRunning && inProcessPhase);
       if (els.progressHint) {
-        const showHint = longRunning && inProcessPhase && progressHint;
-        els.progressHint.hidden = !showHint;
-        if (showHint) els.progressHint.textContent = progressHint;
+        const hintText = detail || (longRunning && inProcessPhase ? progressHint : "");
+        els.progressHint.hidden = !hintText;
+        if (hintText) els.progressHint.textContent = hintText;
       }
     }
 
@@ -592,7 +597,9 @@
       els.btnSelectFile?.classList.remove("is-quota-blocked");
       els.btnSelectFile?.setAttribute("aria-disabled", "false");
 
-      const summary = Q.getQuotaSummary(state);
+      const summary = Q.getQuotaSummary(state, {
+        compact: document.body?.classList.contains("tool-page--3d-parity")
+      });
       els.quotaText.innerHTML = summary.sub
         ? `${summary.text} <span class="quota-sub">(${summary.sub})</span>`
         : summary.text;
@@ -622,6 +629,32 @@
 
     async function runSingleFilePipeline(file, token, onTick, isCancelled) {
       const cancelled = () => (token !== runToken) || (isCancelled && isCancelled());
+
+      // If 3D ModelConverter pipeline (CAD / Mesh / BIM), execute full 8-step API pipeline
+      if ((etaProfile === "cad" || etaProfile === "mesh" || etaProfile === "bim") && global.ModelConverterClient) {
+        const formats = config.getFormats ? config.getFormats() : { from: "STEP", to: "GLB" };
+        const mcClient = new global.ModelConverterClient();
+        const demoScenario = sessionStorage.getItem("mc_demo_scenario");
+        if (demoScenario) mcClient.setScenario(demoScenario);
+
+        return await mcClient.executeConversion(file, {
+          fromFormat: formats.from,
+          toFormat: formats.to,
+          clientReference: `wps_req_${Date.now()}`,
+          onProgress: ({ phase, percent, eta, detail }) => {
+            if (cancelled()) return;
+            onTick({
+              phase: "process",
+              phaseLabel: phase,
+              progress: percent,
+              eta: eta,
+              detail: detail
+            });
+          },
+          shouldAbort: cancelled
+        });
+      }
+
       const uploaded = await simulateUpload(({ percent, eta }) => {
         if (cancelled()) return;
         onTick({
@@ -749,6 +782,13 @@
           <span>Compressed: ${formatBytes(result.stats.outputSize)}</span>
           <span class="result-saved">Saved ${formatBytes(result.stats.saved)} (${result.stats.ratio})</span>
         `;
+      } else if (result.stats.taskId) {
+        els.resultStats.innerHTML = `
+          <span>${result.stats.from} → ${result.stats.to}</span>
+          <span>Output: ${formatBytes(result.stats.outputSize)}</span>
+          <span class="result-sha256" title="SHA-256: ${escapeHtml(result.stats.sha256)}">SHA-256: <code>${escapeHtml((result.stats.sha256 || "").slice(0, 10))}…</code> <span class="material-symbols-rounded" style="font-size:14px;vertical-align:middle;color:#00af57">verified</span></span>
+          <span class="result-taskid" style="color:var(--soft-muted);font-size:12px">Task: <code>${escapeHtml(result.stats.taskId)}</code></span>
+        `;
       } else {
         els.resultStats.innerHTML = `
           <span>${result.stats.from} → ${result.stats.to}</span>
@@ -767,6 +807,12 @@
     async function startUpload(files) {
       const list = Array.from(files || []).filter(Boolean);
       if (!list.length) return;
+      if (singleFile && list.length > 1) {
+        global.WPSQuotaModals?.openMemberFileLimit(
+          "This 3D converter supports one file at a time. Please select a single file."
+        );
+        return;
+      }
       if (interceptFiles(list)) return;
 
       if (list.length > 1) {
@@ -796,7 +842,8 @@
           updateProgressUI({
             percent: tick.progress,
             eta: tick.eta,
-            phase: tick.phaseLabel
+            phase: tick.phaseLabel,
+            detail: tick.detail
           });
         });
         if (token !== runToken) return;
@@ -917,8 +964,7 @@
         e.preventDefault();
         els.uploadZone.classList.remove("is-dragover", "is-drag-denied");
         if (ev === "drop") {
-          const list = Array.from(e.dataTransfer.files || []);
-          if (!interceptFiles(list)) startUpload(e.dataTransfer.files);
+          startUpload(e.dataTransfer.files);
         }
       });
     });

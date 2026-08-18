@@ -1,0 +1,986 @@
+/* 3D converter shell aligned with the live WPS Compress PDF page.
+   Every rule is scoped so PDF tools keep their existing presentation. */
+
+body.tool-page--3d-parity {
+  --font: Gabarito, Helvetica, Arial, sans-serif;
+  --parity-ink: #0d0d0d;
+  --parity-muted: #6b6b6b;
+  --parity-accent: #5948f3;
+  --parity-soft: #fbfbfc;
+  padding-top: 64px;
+  overflow-x: clip;
+  font-family: Gabarito, Helvetica, Arial, sans-serif;
+}
+
+.tool-page--3d-parity .site-header,
+.tool-page--3d-parity .site-header.is-scrolled {
+  height: 64px;
+  align-items: flex-start;
+  background: #fff;
+}
+
+.tool-page--3d-parity .site-header .header-glass {
+  display: none;
+}
+
+.tool-page--3d-parity .tool-page-main {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero */
+.tool-page--3d-parity .tool-hero-v2 {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  width: 100%;
+  max-width: none;
+  min-height: 226px;
+  margin: 0;
+  padding: 32px 24px 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.tool-page--3d-parity .tool-hero-orbs {
+  position: absolute;
+  inset: 64px 0 auto;
+  z-index: -1;
+  width: 100%;
+  height: 1004px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tool-page--3d-parity .tool-hero-orb {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.52;
+}
+
+.tool-page--3d-parity .tool-hero-orb--a {
+  top: 154px;
+  left: 50%;
+  width: min(1080px, 75vw);
+  height: 531px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(226, 218, 255, 0.78), rgba(226, 218, 255, 0));
+}
+
+.tool-page--3d-parity .tool-hero-orb--b {
+  top: 253px;
+  left: -5%;
+  width: min(648px, 54vw);
+  height: 504px;
+  background: radial-gradient(circle, rgba(217, 231, 255, 0.82), rgba(217, 231, 255, 0));
+}
+
+.tool-page--3d-parity .tool-hero-orb--c {
+  top: 335px;
+  left: 50%;
+  width: min(1080px, 78vw);
+  height: 651px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(250, 225, 242, 0.62), rgba(250, 225, 242, 0));
+}
+
+.tool-page--3d-parity .bread-box {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-start;
+  width: min(1200px, calc(100% - 160px));
+  max-width: 1200px;
+  min-height: 22px;
+  margin: 0 0 0 max(18px, calc((100% - 1200px) / 2));
+  align-self: flex-start;
+  gap: 8px;
+  color: var(--parity-ink);
+  font-size: 14px;
+  line-height: 22px;
+  text-align: left;
+}
+
+.tool-page--3d-parity .bread-home {
+  color: rgba(13, 13, 13, 0.46);
+}
+
+.tool-page--3d-parity .bread-chevron {
+  color: rgba(13, 13, 13, 0.46);
+}
+
+.tool-page--3d-parity .hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(1200px, calc(100% - 160px));
+  max-width: 1200px;
+  margin-left: max(18px, calc((100% - 1200px) / 2));
+  padding: 0;
+  align-self: flex-start;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.tool-page--3d-parity .tool-hero-v2 .title {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  color: var(--parity-ink);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 60px;
+  text-align: center;
+}
+
+.tool-page--3d-parity .tool-hero-v2 .desc {
+  width: 100%;
+  max-width: 1052px;
+  margin: 0;
+  color: var(--parity-muted);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: center;
+}
+
+/* 3D controls and upload area */
+.tool-page--3d-parity .tool-workspace-wrap--3d {
+  position: relative;
+  z-index: 1;
+  width: min(1200px, calc(100% - 208px));
+  max-width: 1200px;
+  margin: 48px 0 0 max(42px, calc((100% - 1200px) / 2));
+  padding: 0 0 100px;
+  box-sizing: border-box;
+}
+
+.tool-page--3d-parity .workspace-card--3d {
+  overflow: hidden;
+  border: 1px solid rgba(13, 13, 13, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 44px rgba(30, 33, 52, 0.06);
+}
+
+.tool-page--3d-parity .workspace-controls {
+  width: 100%;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tool-page--3d-parity .format-hub {
+  padding: 16px 16px 10px;
+  border: 0;
+}
+
+.tool-page--3d-parity .format-hub-grid--aligned {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 24px;
+  margin: 0;
+}
+
+.tool-page--3d-parity .format-group {
+  display: grid;
+  grid-template-rows: 22px 1fr;
+  align-content: start;
+  min-width: 0;
+  height: 100%;
+  gap: 10px;
+}
+
+.tool-page--3d-parity .format-group-title {
+  align-self: start;
+  min-height: 22px;
+  margin: 0;
+  color: var(--parity-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tool-page--3d-parity .format-chips {
+  align-content: start;
+  align-self: stretch;
+  gap: 8px;
+}
+
+.tool-page--3d-parity .format-chip {
+  min-height: 32px;
+  padding: 6px 13px;
+  border-color: rgba(13, 13, 13, 0.1);
+  color: #30333b;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.tool-page--3d-parity .format-chip.is-selected {
+  border-color: var(--parity-ink);
+  background: var(--parity-ink);
+  color: #fff;
+}
+
+.tool-page--3d-parity .format-arrow {
+  display: grid;
+  width: 32px;
+  min-width: 32px;
+  padding: 29px 0 0;
+  place-items: start center;
+  align-self: stretch;
+  color: #777d89;
+}
+
+.tool-page--3d-parity .tool-quota-bar {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  margin: 0 0 8px;
+  padding: 0 16px;
+  justify-content: flex-end;
+  box-sizing: border-box;
+}
+
+.tool-page--3d-parity .tool-quota-bar__row {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tool-page--3d-parity .tool-quota-bar .quota-wrap {
+  gap: 8px;
+}
+
+.tool-page--3d-parity .tool-quota-bar .quota-badge {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(13, 13, 13, 0.12);
+  border-radius: 19px;
+  background: #fff;
+  color: #393f51;
+  font-size: 14px;
+  line-height: 22px;
+  box-sizing: border-box;
+}
+
+.tool-page--3d-parity .tool-quota-bar .quota-info-btn {
+  width: 115px;
+  min-width: 115px;
+  height: 38px;
+  padding: 0 12px;
+  place-items: center;
+  border-radius: 19px;
+  border-color: rgba(13, 13, 13, 0.12);
+  color: var(--parity-accent);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.tool-page--3d-parity .tool-quota-bar .quota-badge-icon {
+  color: var(--parity-accent);
+  font-size: 16px;
+}
+
+.tool-page--3d-parity .workspace-card--3d .workspace-body {
+  min-height: 0;
+  padding: 0 16px 16px;
+}
+
+.tool-page--3d-parity .hero-dropzone {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 526px;
+  min-height: 526px;
+  padding: 78px 24px 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(89, 72, 243, 0.02);
+  box-sizing: border-box;
+}
+
+.tool-page--3d-parity .tool-drop-outline {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: rgba(89, 72, 243, 0.48);
+  pointer-events: none;
+}
+
+.tool-page--3d-parity .tool-drop-outline rect {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-dasharray: 8 8;
+}
+
+.tool-page--3d-parity .hero-dropzone.is-dragover .tool-drop-outline {
+  color: var(--parity-accent);
+}
+
+.tool-page--3d-parity .hero-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.tool-page--3d-parity .hero-icon-tile {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: 14px;
+}
+
+.tool-page--3d-parity .hero-file-sheet {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 30px;
+  border: 1px solid #8d93a1;
+  border-radius: 2px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.tool-page--3d-parity .hero-file-sheet::after {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 1px solid #8d93a1;
+  border-left: 1px solid #8d93a1;
+  background: #edeaff;
+  content: "";
+}
+
+.tool-page--3d-parity .hero-file-badge {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  display: grid;
+  width: 14px;
+  height: 14px;
+  place-items: center;
+  border-radius: 2px;
+  background: var(--parity-accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tool-page--3d-parity .hero-copy-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tool-page--3d-parity .hero-upload-title {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.tool-page--3d-parity .hero-upload-sub {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.tool-page--3d-parity .hero-select-btn {
+  min-width: 208px;
+  min-height: 56px;
+  padding: 0 24px;
+  gap: 8px;
+  border-radius: 10px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.tool-page--3d-parity .hero-select-btn .material-symbols-rounded {
+  font-size: 20px;
+}
+
+.tool-page--3d-parity .upload-privacy-note {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #777d89;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.tool-page--3d-parity .upload-privacy-note .material-symbols-rounded {
+  font-size: 16px;
+}
+
+.tool-page--3d-parity .workspace-back-wrap {
+  padding-top: 20px;
+}
+
+/* Marketing modules */
+.tool-page--3d-parity .tool-related {
+  gap: 72px;
+  padding: 100px 24px;
+}
+
+.tool-page--3d-parity .tool-related__grid {
+  justify-content: center;
+}
+
+.tool-page--3d-parity .tool-related__card {
+  flex: 0 1 288px;
+  width: 288px;
+  max-width: 288px;
+  min-height: 172px;
+}
+
+.tool-page--3d-parity .tool-related__cta {
+  min-height: 72px;
+  margin-top: 0;
+  padding: 24px 48px;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.tool-page--3d-parity .tool-why {
+  gap: 72px;
+  padding: 88px 24px;
+}
+
+.tool-page--3d-parity .tool-guide {
+  display: flex;
+  padding: 88px 24px;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+  border: 0;
+  background: var(--parity-soft);
+}
+
+.tool-page--3d-parity .tool-guide__title {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0;
+  font-size: 40px;
+  line-height: 48px;
+}
+
+.tool-page--3d-parity .tool-guide__steps {
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tool-page--3d-parity .tool-guide__step {
+  min-height: 220px;
+  padding: 24px;
+  gap: 20px;
+}
+
+.tool-page--3d-parity .tool-guide__text {
+  color: rgba(13, 13, 13, 0.55);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.tool-page--3d-parity .tool-learn-more {
+  padding: 88px 24px;
+}
+
+.tool-page--3d-parity .tool-learn-more__inner {
+  gap: 72px;
+}
+
+.tool-page--3d-parity .tool-faq {
+  gap: 72px;
+  padding: 100px 24px;
+}
+
+/* All tools and footer */
+.tool-page--3d-parity .tools-directory {
+  padding: 64px 72px;
+  background: #fff;
+}
+
+.tool-page--3d-parity .tools-directory-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tool-page--3d-parity .tools-directory h2 {
+  margin: 0 0 48px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 35px;
+}
+
+.tool-page--3d-parity .tools-directory-heading-continued {
+  visibility: visible;
+}
+
+.tool-page--3d-parity .tools-directory-row,
+.tool-page--3d-parity .tools-directory-row--six,
+.tool-page--3d-parity .tools-directory-row--secondary {
+  gap: 40px 48px;
+}
+
+.tool-page--3d-parity .footer {
+  min-height: 462px;
+  padding: 64px 72px;
+  background: #fff;
+}
+
+.tool-page--3d-parity .footer::before {
+  display: none;
+}
+
+.tool-page--3d-parity .footer-inner {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.tool-page--3d-parity .footer-accordion-button {
+  display: inline-flex;
+  padding: 0;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.tool-page--3d-parity .footer-accordion-button:disabled {
+  cursor: default;
+}
+
+.tool-page--3d-parity .footer-accordion-icon {
+  display: none;
+}
+
+@media (max-width: 1240px) {
+  .tool-page--3d-parity .footer .footer-top {
+    grid-template-columns: minmax(196px, 1.3fr) repeat(3, minmax(150px, 1fr));
+    gap: 32px;
+  }
+
+  .tool-page--3d-parity .footer-brand,
+  .tool-page--3d-parity .footer-products,
+  .tool-page--3d-parity .footer-components,
+  .tool-page--3d-parity .footer-company {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 980px) {
+  .tool-page--3d-parity .bread-box,
+  .tool-page--3d-parity .hero-copy {
+    width: calc(100% - 48px);
+    max-width: none;
+    margin-right: auto;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .tool-page--3d-parity .hero-copy {
+    padding: 0;
+  }
+
+  .tool-page--3d-parity .tool-workspace-wrap--3d {
+    width: calc(100% - 48px);
+    max-width: none;
+    margin: 18px auto 0;
+  }
+
+  .tool-page--3d-parity .hero-dropzone {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .tool-page--3d-parity .footer {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .tool-page--3d-parity .tool-hero-v2 {
+    min-height: 240px;
+    padding: 24px 24px;
+    gap: 24px;
+  }
+
+  .tool-page--3d-parity .bread-box {
+    font-size: 12px;
+  }
+
+  .tool-page--3d-parity .hero-copy {
+    padding: 0;
+  }
+
+  .tool-page--3d-parity .tool-hero-v2 .title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .tool-page--3d-parity .tool-hero-v2 .desc {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .tool-page--3d-parity .tool-workspace-wrap--3d {
+    width: calc(100% - 48px);
+    margin: 18px auto 0;
+    padding-bottom: 64px;
+  }
+
+  .tool-page--3d-parity .workspace-controls {
+    border-radius: 0;
+  }
+
+  .tool-page--3d-parity .format-hub {
+    padding: 18px 16px 12px;
+  }
+
+  .tool-page--3d-parity .format-hub-grid--aligned {
+    grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .tool-page--3d-parity .format-arrow {
+    width: 24px;
+    min-width: 24px;
+  }
+
+  .tool-page--3d-parity .format-chip {
+    min-height: 30px;
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .tool-page--3d-parity .tool-quota-bar {
+    margin: 0 0 8px;
+    padding: 0;
+  }
+
+  .tool-page--3d-parity .workspace-card--3d .workspace-body {
+    padding: 0 12px 12px;
+  }
+
+  .tool-page--3d-parity .hero-dropzone {
+    height: 420px;
+    min-height: 420px;
+    padding: 96px 16px 20px;
+  }
+
+  .tool-page--3d-parity .tool-related {
+    padding: 48px 24px;
+    gap: 24px;
+  }
+
+  .tool-page--3d-parity .tool-related__title,
+  .tool-page--3d-parity .tool-why__title,
+  .tool-page--3d-parity .tool-guide__title,
+  .tool-page--3d-parity .tool-learn-more__title,
+  .tool-page--3d-parity .tool-faq__title {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .tool-page--3d-parity .tool-related__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .tool-page--3d-parity .tool-related__card {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 172px;
+  }
+
+  .tool-page--3d-parity .tool-related__cta {
+    width: 100%;
+    min-height: 56px;
+    padding: 16px 24px;
+    font-size: 18px;
+  }
+
+  .tool-page--3d-parity .tool-why {
+    padding: 48px 0;
+    gap: 24px;
+  }
+
+  .tool-page--3d-parity .tool-why__title {
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .tool-page--3d-parity .tool-why__grid {
+    width: 100%;
+    padding: 0 24px 12px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .tool-page--3d-parity .tool-why__grid::-webkit-scrollbar,
+  .tool-page--3d-parity .tool-learn-more__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tool-page--3d-parity .tool-why__card {
+    flex: 0 0 calc(100vw - 48px);
+    scroll-snap-align: center;
+  }
+
+  .tool-page--3d-parity .tool-guide {
+    padding: 48px 24px;
+    gap: 24px;
+  }
+
+  .tool-page--3d-parity .tool-guide__steps {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tool-page--3d-parity .tool-guide__step {
+    min-height: 0;
+  }
+
+  .tool-page--3d-parity .tool-learn-more {
+    padding: 48px 24px;
+  }
+
+  .tool-page--3d-parity .tool-learn-more__inner {
+    gap: 32px;
+  }
+
+  .tool-page--3d-parity .tool-learn-more__header {
+    align-items: flex-end;
+  }
+
+  .tool-page--3d-parity .tool-learn-more__list {
+    padding-bottom: 12px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .tool-page--3d-parity .tool-learn-more__card {
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+  }
+
+  .tool-page--3d-parity .tool-learn-more__cover {
+    height: 220px;
+  }
+
+  .tool-page--3d-parity .tool-faq {
+    padding: 64px 16px;
+    gap: 40px;
+  }
+
+  .tool-page--3d-parity .tool-faq__item {
+    padding: 0;
+  }
+
+  .tool-page--3d-parity .tool-faq__question {
+    min-height: 90px;
+    padding: 32px 0;
+  }
+
+  .tool-page--3d-parity .tools-directory {
+    padding: 60px 24px;
+  }
+
+  .tool-page--3d-parity .tools-directory h2 {
+    margin-bottom: 40px;
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  .tool-page--3d-parity .tools-directory-inner {
+    width: 100%;
+    padding: 0;
+  }
+
+  .tool-page--3d-parity .tools-directory-row,
+  .tool-page--3d-parity .tools-directory-row--six,
+  .tool-page--3d-parity .tools-directory-row--secondary {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .tool-page--3d-parity .footer {
+    padding: 70px 24px 48px;
+  }
+
+  .tool-page--3d-parity .footer .footer-top,
+  .tool-page--3d-parity .footer .footer-bottom {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tool-page--3d-parity .footer .footer-top {
+    min-height: 0;
+    gap: 16px;
+  }
+
+  .tool-page--3d-parity .footer-brand {
+    margin-bottom: 16px;
+  }
+
+  .tool-page--3d-parity .footer-col {
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px solid rgba(13, 13, 13, 0.08);
+  }
+
+  .tool-page--3d-parity .footer-col h3 {
+    margin: 0;
+  }
+
+  .tool-page--3d-parity .footer-accordion-button {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    padding: 0;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    color: var(--parity-ink);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .tool-page--3d-parity .footer-accordion-icon {
+    display: block;
+    transition: transform 180ms ease;
+  }
+
+  .tool-page--3d-parity .footer-col.is-open .footer-accordion-icon {
+    transform: rotate(180deg);
+  }
+
+  .tool-page--3d-parity .footer-accordion-panel > a {
+    margin: 0 0 16px;
+  }
+
+  .tool-page--3d-parity .footer-accordion-panel > a:last-child {
+    margin-bottom: 16px;
+  }
+
+  .tool-page--3d-parity .footer .footer-bottom {
+    min-height: 0;
+    margin-top: 24px;
+    padding-top: 24px;
+    gap: 24px;
+  }
+
+  .tool-page--3d-parity .footer .language-picker,
+  .tool-page--3d-parity .footer .language {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .tool-page--3d-parity .tool-workspace-wrap--3d {
+    width: calc(100% - 32px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .tool-page--3d-parity .format-hub-grid--aligned {
+    grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .tool-page--3d-parity .format-arrow {
+    width: 20px;
+    min-width: 20px;
+  }
+
+  .tool-page--3d-parity .format-chip {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .tool-page--3d-parity .tool-quota-bar .quota-badge {
+    max-width: calc(100vw - 152px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tool-page--3d-parity .tool-quota-bar .quota-info-btn {
+    min-width: 96px;
+    padding: 0 10px;
+  }
+
+  .tool-page--3d-parity .hero-dropzone {
+    height: 400px;
+    min-height: 400px;
+    padding-top: 88px;
+  }
+
+  .tool-page--3d-parity .upload-privacy-note {
+    max-width: 248px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-page--3d-parity *,
+  .tool-page--3d-parity *::before,
+  .tool-page--3d-parity *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

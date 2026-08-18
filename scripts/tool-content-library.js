@@ -53,6 +53,14 @@
     };
   }
 
+  function singleFile3dFaq() {
+    return {
+      q: "Is batch conversion available?",
+      a: "<p>No. The current 3D converter supports one file per conversion for all account types. Download the result, then start another conversion for the next model.</p>",
+      more: DOCS.convert
+    };
+  }
+
   function blog(title, articles) {
     return {
       title,
@@ -415,49 +423,59 @@
       whyChoose: why("Why Choose WPS Mesh Converter?", [
         {
           icon: WHY_ICONS.ratios,
-          title: "Broad mesh format coverage",
-          body: "Convert among OBJ, STL, FBX, GLB/GLTF, DAE, 3DS, X, 3MF, OFF, AC3D, and PLY with a clear From/To format hub.",
+          title: "Convert 11 mesh input formats",
+          body: "Upload OBJ, STL, FBX, GLB/GLTF, DAE, 3DS, X, 3MF, OFF, AC3D, or PLY and choose an available output format.",
           href: DOCS.convert
         },
         {
           icon: WHY_ICONS.shield,
-          title: "Progress + ETA for longer jobs",
-          body: "Typical mesh conversions take about 10 seconds to 2 minutes. Keep the tab open while progress and remaining time update.",
+          title: "Choose from 7 mesh output formats",
+          body: "Convert to OBJ, STL, FBX, GLB/GLTF, DAE, 3MF, or PLY. The format selector disables unsupported paths and same-format conversion.",
           href: DOCS.convert
         },
         {
           icon: WHY_ICONS.desktop,
-          title: "Batch when you upgrade",
-          body: "Free users process one file per run. Premium unlocks batch conversion for production pipelines.",
-          href: DOCS.create
+          title: "One file with progress and ETA",
+          body: "Process one mesh file per conversion. Most jobs take about 10 seconds to 2 minutes, with progress and estimated time shown on the page.",
+          href: DOCS.convert
         }
       ]),
       guide: guide("How to convert mesh files online", [
-        "Choose input and output mesh formats in the hub (same format is disabled).",
-        "Upload your mesh file (or multiple if Premium).",
-        "Wait for conversion — watch progress and ETA — then download the result."
+        "Select the source mesh format and one available output format. Same-format conversion is disabled.",
+        "Upload one supported mesh file. The current converter does not accept multiple files in one conversion.",
+        "Keep the page open to follow progress and ETA. When conversion finishes, download the converted mesh file."
       ]),
       faq: faq("Mesh Converter FAQs", [
         {
+          q: "What mesh formats can I convert?",
+          a: "<p>You can upload <strong>OBJ, STL, FBX, GLB/GLTF, DAE, 3DS, X, 3MF, OFF, AC3D, and PLY</strong>. Available outputs are OBJ, STL, FBX, GLB/GLTF, DAE, 3MF, and PLY. The destination options depend on the selected input format.</p>",
+          more: DOCS.convert
+        },
+        {
           q: "How long does mesh conversion take?",
-          a: "<p>Most mesh jobs finish in about <strong>10 seconds to 2 minutes</strong>, depending on file size and polygon density. Progress and ETA stay visible during processing.</p>",
+          a: "<p>Most mesh conversions take about <strong>10 seconds to 2 minutes</strong>. The page displays conversion progress and an estimated remaining time while the file is processed.</p>",
           more: DOCS.convert
         },
         {
-          q: "Which formats can I convert?",
-          a: "<p>Inputs include OBJ, STL, FBX, GLB/GLTF, DAE, 3DS, X, 3MF, OFF, AC3D, and PLY. Outputs include OBJ, STL, FBX, GLB/GLTF, DAE, 3MF, and PLY. Converting to the same format is not allowed.</p>",
+          q: "Can I convert a mesh file to the same format?",
+          a: "<p>No. Same-format conversion is disabled. Select a different supported output from the options available for your source format.</p>",
           more: DOCS.convert
         },
-        {
-          q: "Is there a 3D preview?",
-          a: "<p>Preview capability exists in the product roadmap, but the current online flow is upload → convert → download so you can share files quickly without a local install.</p>",
-          more: DOCS.convert
-        }
+        singleFile3dFaq()
       ]),
       blog: blog("Learn More About Mesh Conversion", [
-        { title: "OBJ vs STL for 3D printing", body: "STL remains a common print exchange format; OBJ/GLB are better when you need materials or scene graphs." },
-        { title: "Why GLB/GLTF for the web", body: "GLB packages geometry and materials for real-time viewers and AR experiences." },
-        { title: "Keep meshes lean before convert", body: "Decimate dense scans first when possible — smaller inputs finish faster within the 10s–2 min window." }
+        {
+          title: "Mesh converter input formats",
+          body: "The input selector supports OBJ, STL, FBX, GLB/GLTF, DAE, 3DS, X, 3MF, OFF, AC3D, and PLY files."
+        },
+        {
+          title: "Mesh converter output formats",
+          body: "Choose OBJ, STL, FBX, GLB/GLTF, DAE, 3MF, or PLY when that destination is available for the selected source format."
+        },
+        {
+          title: "One-file mesh conversion",
+          body: "Upload one file, follow the progress and ETA, download the result, and then start another conversion for the next model."
+        }
       ])
     },
 
@@ -465,49 +483,64 @@
       whyChoose: why("Why Choose WPS CAD Converter?", [
         {
           icon: WHY_ICONS.ratios,
-          title: "Industrial CAD to STEP or mesh",
-          body: "Convert STEP, IGES, CATIA V5, NX, Creo, SolidWorks, Parasolid, Inventor, JT, PRC, ACIS, and Solid Edge to STEP, GLB/GLTF, FBX, OBJ, or STL.",
+          title: "Convert 12 CAD input formats",
+          body: "Upload STEP, IGES, CATIA V5, NX, Creo, SolidWorks, Parasolid, Inventor, JT, PRC, ACIS, or Solid Edge files.",
           href: DOCS.convert
         },
         {
           icon: WHY_ICONS.shield,
-          title: "Realistic time estimates",
-          body: "CAD jobs typically take <strong>30 seconds to 5 minutes</strong>. The workspace shows progress, ETA, and a long-running hint.",
+          title: "Export to STEP or mesh formats",
+          body: "Choose STEP, GLB/GLTF, FBX, OBJ, or STL when supported for the selected input. STEP inputs convert to mesh outputs rather than STEP.",
           href: DOCS.convert
         },
         {
           icon: WHY_ICONS.desktop,
-          title: "Know what converts to mesh",
-          body: "Exporting CAD to mesh (OBJ/STL/FBX/GLB) may lose parametric history — use STEP when you need to preserve CAD exchange data.",
+          title: "One file with progress and ETA",
+          body: "Process one CAD file per conversion. Most jobs take about 30 seconds to 5 minutes, with progress and estimated time shown on the page.",
           href: DOCS.convert
         }
       ]),
       guide: guide("How to convert CAD files online", [
-        "Pick your CAD input format and a supported output (STEP or mesh).",
-        "Upload the CAD file and continue when upload completes.",
-        "Keep the tab open while conversion runs (often 30s–5 min), then download."
+        "Select the CAD input format and one available output. STEP inputs can be converted to GLB/GLTF, FBX, OBJ, or STL.",
+        "Upload one supported CAD file. The current converter does not accept multiple files in one conversion.",
+        "Keep the page open to follow progress and ETA. When conversion finishes, download the converted file."
       ]),
       faq: faq("CAD Converter FAQs", [
         {
+          q: "Which CAD formats can I convert online?",
+          a: "<p>You can upload <strong>STEP, IGES, CATIA V5, NX, Creo, SolidWorks, Parasolid, Inventor, JT, PRC, ACIS, and Solid Edge</strong> files. The available destination formats depend on the selected CAD input.</p>",
+          more: DOCS.convert
+        },
+        {
+          q: "What output formats does the CAD converter support?",
+          a: "<p>Supported outputs are <strong>STEP, GLB/GLTF, FBX, OBJ, and STL</strong>. IGES and the listed native CAD formats can use STEP or mesh outputs. A STEP input can use GLB/GLTF, FBX, OBJ, or STL.</p>",
+          more: DOCS.convert
+        },
+        {
+          q: "Can I convert STEP to STEP?",
+          a: "<p>No. Same-format conversion is disabled. For a STEP input, select GLB/GLTF, FBX, OBJ, or STL as the output.</p>",
+          more: DOCS.convert
+        },
+        {
           q: "How long does CAD conversion take?",
-          a: "<p>Expect about <strong>30 seconds to 5 minutes</strong>. Larger assemblies and multi-body parts take longer. ETA updates during processing.</p>",
+          a: "<p>Most CAD conversions take about <strong>30 seconds to 5 minutes</strong>. The page displays conversion progress and an estimated remaining time while the file is processed.</p>",
           more: DOCS.convert
         },
-        {
-          q: "Will I keep parametric data?",
-          a: "<p>STEP export targets CAD interchange. Mesh outputs (GLB/FBX/OBJ/STL) are for visualization and may not preserve parametric features or PMI.</p>",
-          more: DOCS.convert
-        },
-        {
-          q: "Can I convert STEP to another STEP?",
-          a: "<p>Same-format conversion is disabled. From STEP, choose a mesh output. Other CAD inputs can convert to STEP or mesh.</p>",
-          more: DOCS.convert
-        }
+        singleFile3dFaq()
       ]),
       blog: blog("Learn More About CAD Conversion", [
-        { title: "STEP for suppliers, mesh for review", body: "Send STEP when vendors need CAD; send GLB/OBJ when stakeholders only need to view the model." },
-        { title: "SolidWorks and Inventor uploads", body: "Upload part or assembly files supported by the hub, then pick STEP or a mesh target." },
-        { title: "Plan for 5-minute jobs", body: "Complex CAD conversions can approach the upper ETA — leave the tab open until download appears." }
+        {
+          title: "CAD converter input formats",
+          body: "The input selector supports STEP, IGES, CATIA V5, NX, Creo, SolidWorks, Parasolid, Inventor, JT, PRC, ACIS, and Solid Edge."
+        },
+        {
+          title: "CAD converter output formats",
+          body: "Choose STEP, GLB/GLTF, FBX, OBJ, or STL when that destination is available for the selected CAD source format."
+        },
+        {
+          title: "STEP and mesh conversion paths",
+          body: "STEP inputs convert to GLB/GLTF, FBX, OBJ, or STL. Other listed CAD inputs can also use STEP as an output."
+        }
       ])
     },
 
@@ -515,49 +548,59 @@
       whyChoose: why("Why Choose WPS BIM Converter?", [
         {
           icon: WHY_ICONS.ratios,
-          title: "Architecture formats covered",
-          body: "Convert IFC, Revit, Navisworks, DWF, AutoCAD (DWG/DXF), and SKP to GLB/GLTF, FBX, OBJ, or STL for visualization and sharing.",
+          title: "Upload 6 BIM and architecture formats",
+          body: "Select IFC, Revit, Navisworks, DWF, AutoCAD (DWG/DXF), or SKP as the source format for the conversion.",
           href: DOCS.convert
         },
         {
           icon: WHY_ICONS.shield,
-          title: "Built for longer BIM jobs",
-          body: "BIM conversions often take <strong>1 to 10 minutes</strong>. Progress, ETA, and on-screen hints help you wait confidently.",
+          title: "Convert to 4 mesh output formats",
+          body: "Convert a supported BIM or architecture file to GLB/GLTF, FBX, OBJ, or STL for visualization and sharing.",
           href: DOCS.convert
         },
         {
           icon: WHY_ICONS.desktop,
-          title: "Upload → convert → download",
-          body: "Preview may be available later; today the product flow focuses on reliable conversion and download for coordination meetings.",
+          title: "One file with progress and ETA",
+          body: "Process one BIM file per conversion. Most jobs take about 1 to 10 minutes, with progress and estimated time shown on the page.",
           href: DOCS.convert
         }
       ]),
       guide: guide("How to convert BIM files online", [
-        "Select a BIM/architecture input and a mesh output format.",
-        "Upload the model and continue after upload succeeds.",
-        "Allow 1–10 minutes for processing, then download the mesh file."
+        "Select a BIM or architecture input format and choose GLB/GLTF, FBX, OBJ, or STL as the output.",
+        "Upload one supported BIM file. The current converter does not accept multiple files in one conversion.",
+        "Keep the page open to follow progress and ETA. When conversion finishes, download the converted mesh file."
       ]),
       faq: faq("BIM Converter FAQs", [
         {
+          q: "Which BIM and architecture formats can I upload?",
+          a: "<p>You can upload <strong>IFC, Revit (RVT/RFA), Navisworks (NWD/NWC), DWF (DWF/DWFX), AutoCAD (DWG/DXF), and SKP</strong> files.</p>",
+          more: DOCS.convert
+        },
+        {
+          q: "What output formats does the BIM converter support?",
+          a: "<p>Supported outputs are <strong>GLB/GLTF, FBX, OBJ, and STL</strong>. The page converts the listed BIM and architecture inputs to these mesh formats; BIM authoring formats are not listed as outputs.</p>",
+          more: DOCS.convert
+        },
+        {
           q: "How long does BIM conversion take?",
-          a: "<p>Typical BIM jobs run about <strong>1 to 10 minutes</strong> depending on model size and linked assets. Keep this tab open; ETA and progress update live.</p>",
+          a: "<p>Most BIM conversions take about <strong>1 to 10 minutes</strong>. The page displays conversion progress and an estimated remaining time while the file is processed.</p>",
           more: DOCS.convert
         },
-        {
-          q: "What outputs are supported?",
-          a: "<p>Outputs are GLB/GLTF, FBX, OBJ, and STL — formats suited for viewers, game engines, and lightweight review — not full BIM authoring packages.</p>",
-          more: DOCS.convert
-        },
-        {
-          q: "Is batch conversion available?",
-          a: "<p>Yes for Premium users. Free accounts process one file per run with the shared site-wide daily quota.</p>",
-          more: DOCS.convert
-        }
+        singleFile3dFaq()
       ]),
       blog: blog("Learn More About BIM Conversion", [
-        { title: "IFC to GLB for client walkthroughs", body: "Export IFC to GLB when non-BIM stakeholders need a lightweight 3D view." },
-        { title: "Revit and Navisworks exchanges", body: "Use the BIM hub when you need mesh outputs from common AEC containers." },
-        { title: "Expect longer runtimes", body: "Large buildings can approach 10 minutes — schedule conversions before reviews, not during the call." }
+        {
+          title: "BIM converter input formats",
+          body: "The input selector supports IFC, Revit, Navisworks, DWF, AutoCAD (DWG/DXF), and SKP files."
+        },
+        {
+          title: "BIM converter output formats",
+          body: "Each listed BIM and architecture input can be converted to GLB/GLTF, FBX, OBJ, or STL."
+        },
+        {
+          title: "One-file BIM conversion",
+          body: "Upload one file, follow the progress and ETA, download the mesh result, and then start another conversion if needed."
+        }
       ])
     }
   };

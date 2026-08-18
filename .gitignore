@@ -2,3 +2,11 @@ scripts/*.py
 design-qa.md
 _tmp_check.js
 .DS_Store
+node_modules/
+.vite/
+dist/
+_legacy_html/
+/public/
+/src/
+/local-*.png
+/official-*.png

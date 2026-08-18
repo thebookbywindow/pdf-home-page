@@ -67,7 +67,7 @@
 
   function renderColumn(title, itemsHtml, continued) {
     const heading = continued
-      ? `<h3 class="tools-directory-heading-continued" aria-hidden="true">${title}</h3>`
+      ? `<h3 class="tools-directory-heading-continued">${title}</h3>`
       : `<h3>${title}</h3>`;
     return `<div class="tools-directory-group">${heading}<div class="tools-directory-list">${itemsHtml}</div></div>`;
   }

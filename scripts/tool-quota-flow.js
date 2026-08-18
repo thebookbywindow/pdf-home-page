@@ -194,25 +194,37 @@
       return validateUpload(files, toolSlug);
     },
     getMaxFilesForTool,
-    getQuotaSummary(state) {
+    getQuotaSummary(state, options = {}) {
       state = normalizeState(state || this.getState());
       if (state.isPremium) {
-        return { text: "<strong>Unlimited</strong>", sub: null };
+        return {
+          text: options.compact ? "Unlimited uses" : "<strong>Unlimited</strong>",
+          sub: null
+        };
       }
       const left = Math.max(0, state.usesRemaining);
       return {
-        text: `<strong>${left}</strong> of ${DAILY_LIMIT} free uses left today`,
+        text: options.compact
+          ? `Daily <strong>${left}</strong> of ${DAILY_LIMIT}`
+          : `<strong>${left}</strong> of ${DAILY_LIMIT} free uses left today`,
         sub: null
       };
     },
-    getQuotaRules() {
+    getQuotaRules(toolSlug) {
+      const singleFile = Boolean(
+        global.WPSToolCatalog?.getBySlug?.(toolSlug)?.singleFile
+      );
       return {
         title: "Free quota on pdf.wps.com",
         subtitle: "Resets daily · shared across all tools",
         table: [
           { label: "Daily uses", guest: "10 total / day", member: "Unlimited" },
           { label: "File size", guest: `≤ ${GUEST_MAX_MB} MB`, member: `≤ ${MEMBER_MAX_MB} MB` },
-          { label: "Files per task", guest: "1 file (Merge: 2)", member: "Unlimited" }
+          {
+            label: "Files per task",
+            guest: singleFile ? "1 file" : "1 file (Merge: 2)",
+            member: singleFile ? "1 file" : "Unlimited"
+          }
         ]
       };
     }

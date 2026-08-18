@@ -408,8 +408,8 @@
       icon: "convert-pdf.svg",
       materialIcon: "view_in_ar",
       toolVerb: "convert your mesh files",
-      pageTitle: "Mesh Converter Online",
-      subtitle: "Convert mesh formats online (OBJ, STL, FBX, GLB/GLTF, and more). Upload → convert → download with progress and ETA.",
+      pageTitle: "Free Mesh Converter Online",
+      subtitle: "Convert 3D mesh files between popular formats like OBJ, STL, FBX, GLB, DAE and more. Simply upload your file, choose an output format, and convert it online in seconds.",
       accept: null,
       showRatio: false,
       defaultFrom: "OBJ",
@@ -424,7 +424,8 @@
       downloadLabel: "Download converted file",
       uploadIcon: "view_in_ar",
       autoProcessAfterUpload: true,
-      sharedPipeline: true
+      sharedPipeline: true,
+      singleFile: true
     },
     "cad-converter": {
       slug: "cad-converter",
@@ -434,8 +435,8 @@
       icon: "convert-pdf.svg",
       materialIcon: "architecture",
       toolVerb: "convert your CAD files",
-      pageTitle: "CAD Converter Online",
-      subtitle: "Convert industrial CAD formats to STEP or mesh outputs. Typical time 30s–5 min depending on model size.",
+      pageTitle: "Free CAD Converter Online",
+      subtitle: "Convert CAD files between popular formats like STEP, IGES, CATIA, NX, SolidWorks and more. Simply upload your file, choose an output format, and convert it online in seconds.",
       accept: null,
       showRatio: false,
       defaultFrom: "STEP",
@@ -450,7 +451,8 @@
       downloadLabel: "Download converted file",
       uploadIcon: "architecture",
       autoProcessAfterUpload: true,
-      sharedPipeline: true
+      sharedPipeline: true,
+      singleFile: true
     },
     "bim-converter": {
       slug: "bim-converter",
@@ -460,8 +462,8 @@
       icon: "convert-pdf.svg",
       materialIcon: "apartment",
       toolVerb: "convert your BIM files",
-      pageTitle: "BIM Converter Online",
-      subtitle: "Convert BIM and architecture formats (IFC, Revit, AutoCAD, and more) to mesh outputs for visualization and sharing.",
+      pageTitle: "Free BIM Converter Online",
+      subtitle: "Convert BIM files from formats like IFC, Revit, Navisworks, DWF and more to GLB, FBX, OBJ or STL. Simply upload your file, choose an output format, and convert it online in seconds.",
       accept: null,
       showRatio: false,
       defaultFrom: "IFC",
@@ -476,7 +478,8 @@
       downloadLabel: "Download converted file",
       uploadIcon: "apartment",
       autoProcessAfterUpload: true,
-      sharedPipeline: true
+      sharedPipeline: true,
+      singleFile: true
     }
   };
 

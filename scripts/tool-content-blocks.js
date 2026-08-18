@@ -1,6 +1,7 @@
 /**
  * Reusable homepage-style content blocks for tool inner pages.
  * Prefers WPSToolContentLibrary per-slug content when available.
+ * Aligned with official WPS PDF Tools (pdf.wps.com/en/pdf-tools/pdf-to-word/)
  */
 (function (global) {
   const CONTENT = {
@@ -164,90 +165,153 @@
       .replace(/\bhref="(images\/[^"]+)"/g, (_, p) => `href="${base}${p}"`);
   }
 
-  function renderWhyChoose(config) {
-    const items = config.items.map((item) => `
-      <a class="why-choose-item" href="${item.href}" target="_blank" rel="noopener noreferrer">
-        <div class="why-choose-icon" aria-hidden="true"><img src="${withAsset(item.icon)}" alt="" width="256" height="256" loading="lazy" decoding="async"></div>
-        <h3>${item.title}</h3>
-        <p>${item.body}</p>
-        <span class="why-choose-doc-link">Learn More →</span>
+  function renderRelatedTools(currentTool, options) {
+    const routes = global.WPSToolRoutes;
+    const fromCatalog = relatedFromSlugs(options?.relatedSlugs);
+    const cardsSource = fromCatalog || RELATED_TOOLS.map((t) => {
+      const title = t.title === "Sign PDF" ? "Signing PDF" : t.title;
+      return {
+        title: t.title,
+        icon: t.icon,
+        href: routes ? routes.getPageForTool(title) : "#"
+      };
+    });
+
+    const heading = options?.relatedHeading
+      || (currentTool && String(currentTool).includes("3d") || options?.relatedSlugs?.some((s) => /converter$/.test(s))
+        ? "Related 3D Tools"
+        : "Related PDF Tools");
+
+    const cards = cardsSource.map((t) => `
+      <a role="link" tabindex="0" class="tool-related__card" href="${t.href}">
+        <div class="tool-related__icon" aria-hidden="true">
+          <span class="material-symbols-rounded">${t.icon}</span>
+        </div>
+        <span class="tool-related__label" dir="auto">${t.title}</span>
       </a>
     `).join("");
+
     return `
-      <section class="why-choose why-choose--live" id="why-choose" aria-labelledby="why-choose-title">
-        <h2 id="why-choose-title">${config.title}</h2>
-        <div class="why-choose-grid">${items}</div>
+      <section class="tool-related" id="related-tools" aria-labelledby="tool-related-title">
+        <h2 id="tool-related-title" class="tool-related__title" dir="auto">${heading}</h2>
+        <div class="tool-related__grid">${cards}</div>
+        <a class="tool-related__cta" href="#" data-wps-download="auto">
+          <span dir="auto">Download for All Features</span>
+          <span class="tool-related__cta-arrow" aria-hidden="true">›</span>
+        </a>
+      </section>
+    `;
+  }
+
+  function renderWhyChoose(config) {
+    const items = config.items.map((item, i) => `
+      <li class="tool-why__card">
+        <div class="tool-why__icon-wrap">
+          <div class="tool-why__icon tool-why__icon--${(i % 3) + 1}" aria-hidden="true">
+            <img src="${withAsset(item.icon)}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="tool-why__copy">
+          <h3 class="tool-why__card-title" dir="auto">${item.title}</h3>
+          <p class="tool-why__card-desc" dir="auto">${item.body}</p>
+          <a class="tool-why__learn" href="${item.href}" target="_blank" rel="noopener noreferrer">
+            <span>Learn More</span>
+            <span class="material-symbols-rounded" style="font-size:18px">arrow_outward</span>
+          </a>
+        </div>
+      </li>
+    `).join("");
+    return `
+      <section class="tool-why" id="why-choose" aria-labelledby="tool-why-title">
+        <h2 id="tool-why-title" class="tool-why__title" dir="auto">${config.title}</h2>
+        <ul class="tool-why__grid">${items}</ul>
       </section>
     `;
   }
 
   function renderConverterGuide(config) {
     const steps = config.steps.map((text, i) => `
-      <div class="converter-guide-step">
-        <span class="converter-guide-num">${i + 1}</span>
-        <p>${text}</p>
+      <div class="tool-guide__step">
+        <span class="tool-guide__num">${i + 1}</span>
+        <p class="tool-guide__text">${text}</p>
       </div>
     `).join("");
     return `
-      <section class="converter-guide" id="how-it-works">
-        <h2>${config.title}</h2>
-        <div class="converter-guide-steps">${steps}</div>
-      </section>
-    `;
-  }
-
-  function renderFaq(config) {
-    const items = config.items.map((item, i) => `
-      <article class="faq-item${i === 0 ? " is-open" : ""}">
-        <button class="faq-question" type="button" aria-expanded="${i === 0 ? "true" : "false"}">
-          <span>${item.question}</span>
-          <span class="faq-icon" aria-hidden="true"><span class="material-symbols-rounded">expand_more</span></span>
-        </button>
-        <div class="answer">
-          ${item.answerHtml}
-          <div class="answer-footer">
-            <a class="faq-learn-more" href="${item.learnMore}" target="_blank" rel="noopener noreferrer">Learn More →</a>
-          </div>
-        </div>
-      </article>
-    `).join("");
-    return `
-      <section class="faq" id="faq">
-        <h2>${config.title}</h2>
-        <div class="faq-list">${items}</div>
+      <section class="tool-guide" id="how-it-works" aria-labelledby="tool-guide-title">
+        <h2 id="tool-guide-title" class="tool-guide__title" dir="auto">${config.title}</h2>
+        <div class="tool-guide__steps">${steps}</div>
       </section>
     `;
   }
 
   function renderBlog(config) {
     const cards = config.articles.map((a) => `
-      <a class="blog-card" href="${a.href}" target="_blank" rel="noopener noreferrer">
-        <div class="blog-image"><img src="${withAsset(a.image)}" alt="" loading="lazy" decoding="async"></div>
-        <h4>${a.title}</h4>
-        <p>${a.body}</p>
-      </a>
+      <li class="tool-learn-more__card" role="link" tabindex="0">
+        <a class="tool-learn-more__card-link" href="${a.href}" target="_blank" rel="noopener noreferrer">
+          <div class="tool-learn-more__cover">
+            <img class="tool-learn-more__img" src="${withAsset(a.image)}" alt="${a.title}" loading="lazy" decoding="async">
+          </div>
+          <div class="tool-learn-more__copy">
+            <h3 class="tool-learn-more__card-title">${a.title}</h3>
+            <p class="tool-learn-more__card-desc">${a.body}</p>
+          </div>
+        </a>
+      </li>
     `).join("");
     return `
-      <section class="blog" id="blog">
-        <div class="section-head">
-          <div><h2>${config.title}</h2></div>
-          <a class="btn outline" href="${config.moreHref}" target="_blank" rel="noopener noreferrer">
-            <span>More Articles</span>
-            <span class="btn-icon"><img src="${withAsset("images/legacy/arrow-up-right.svg")}" alt=""></span>
-          </a>
+      <section class="tool-learn-more" id="blog" aria-labelledby="tool-learn-more-title">
+        <div class="tool-learn-more__inner">
+          <div class="tool-learn-more__header">
+            <h2 id="tool-learn-more-title" class="tool-learn-more__title">${config.title}</h2>
+            <a class="tool-learn-more__more" href="${config.moreHref}" target="_blank" rel="noopener noreferrer">
+              <span>More Articles</span>
+              <span class="tool-learn-more__more-arrow">›</span>
+            </a>
+          </div>
+          <ul class="tool-learn-more__list">${cards}</ul>
         </div>
-        <div class="blog-grid">${cards}</div>
       </section>
     `;
   }
 
-  function renderDownloadCta() {
+  function decorateFaqAnswerHtml(answerHtml) {
+    return String(answerHtml || "")
+      .replace(/<p>/g, '<p class="tool-faq__des" dir="auto">')
+      .replace(/<ol>/g, '<ol class="tool-faq__des tool-faq__des-list" dir="auto">')
+      .replace(/<ul>/g, '<ul class="tool-faq__des tool-faq__des-list" dir="auto">');
+  }
+
+  function renderFaq(config) {
+    const items = config.items.map((item) => `
+      <li class="tool-faq__item">
+        <button type="button" class="tool-faq__question" aria-expanded="false">
+          <span class="tool-faq__question-text" dir="auto">${item.question}</span>
+          <span class="tool-faq__toggle" aria-hidden="true">
+            <img class="tool-faq__toggle-h" src="https://global-static.wpscdn.com/cms/seo-website/pdf-prod/img/tool-faq/line-1-2.svg" alt="" width="12" height="2">
+            <img class="tool-faq__toggle-v" src="https://global-static.wpscdn.com/cms/seo-website/pdf-prod/img/tool-faq/line-2.svg" alt="" width="2" height="12">
+          </span>
+        </button>
+        <div class="tool-faq__answer" style="display:none;">
+          ${decorateFaqAnswerHtml(item.answerHtml)}
+          <a class="tool-faq__learn home-pc-learn-more" href="${item.learnMore}" target="_blank" rel="noopener noreferrer">
+            <span class="home-pc-btn-text">
+              <span class="home-pc-btn-roll">
+                <span class="home-pc-btn-roll-line" dir="auto">Learn More</span>
+                <span class="home-pc-btn-roll-line" aria-hidden="true" dir="auto">Learn More</span>
+              </span>
+            </span>
+            <span class="home-pc-learn-arrow" aria-hidden="true">
+              <img src="https://global-static.wpscdn.com/cms/seo-website/pdf-prod/img/tool-faq/learn-arrow.svg" alt="" width="20" height="20">
+              <img class="home-pc-icon-clone" src="https://global-static.wpscdn.com/cms/seo-website/pdf-prod/img/tool-faq/learn-arrow.svg" alt="" width="20" height="20">
+            </span>
+          </a>
+        </div>
+      </li>
+    `).join("");
     return `
-      <section class="tool-download-compact" id="download-cta">
-        <a class="btn blue" href="#" data-wps-download="auto">
-          <span>Download for All Features</span>
-          <span class="btn-icon"><img src="${withAsset("images/legacy/arrow-up-right.svg")}" alt=""></span>
-        </a>
+      <section class="tool-faq" id="faq" aria-labelledby="tool-faq-title">
+        <h2 id="tool-faq-title" class="tool-faq__title" dir="auto">${config.title}</h2>
+        <ul class="tool-faq__list">${items}</ul>
       </section>
     `;
   }
@@ -266,42 +330,17 @@
     }).filter(Boolean);
   }
 
-  function renderRelatedTools(currentTool, options) {
-    const routes = global.WPSToolRoutes;
-    const fromCatalog = relatedFromSlugs(options?.relatedSlugs);
-    const cardsSource = fromCatalog || RELATED_TOOLS.map((t) => {
-      const title = t.title === "Sign PDF" ? "Signing PDF" : t.title;
-      return {
-        title: t.title,
-        icon: t.icon,
-        href: routes ? routes.getPageForTool(title) : "#"
-      };
-    });
-
-    const heading = options?.relatedHeading
-      || (currentTool && String(currentTool).includes("3d") || options?.relatedSlugs?.some((s) => /converter$/.test(s))
-        ? "Related Tools"
-        : "Related PDF Tools");
-
-    const cards = cardsSource.map((t) =>
-      `<a class="related-card" href="${t.href}"><span class="material-symbols-rounded">${t.icon}</span><span>${t.title}</span></a>`
-    ).join("");
-
-    return `
-      <section class="tool-related-section" id="related-tools">
-        <h2>${heading}</h2>
-        <div class="related-grid">${cards}</div>
-      </section>
-    `;
-  }
-
   function initFaqAccordion(root) {
-    root.querySelectorAll(".faq-item").forEach((item) => {
-      const button = item.querySelector(".faq-question");
+    root.querySelectorAll(".tool-faq__item").forEach((item) => {
+      const button = item.querySelector(".tool-faq__question");
+      const answer = item.querySelector(".tool-faq__answer");
       if (!button) return;
       button.addEventListener("click", () => {
         const isOpen = item.classList.toggle("is-open");
         button.setAttribute("aria-expanded", String(isOpen));
+        if (answer) {
+          answer.style.display = isOpen ? "block" : "none";
+        }
       });
     });
   }
@@ -316,16 +355,27 @@
   function mount(slugOrKey, container, options) {
     const data = resolveData(slugOrKey);
     if (!data || !container) return;
+    const is3d = global.WPSToolCatalog?.getBySlug?.(slugOrKey)?.type === "3d-conversion";
     let html = "";
-    if (data.whyChoose) html += renderWhyChoose(data.whyChoose);
-    if (data.guide) html += renderConverterGuide(data.guide);
-    if (data.faq) html += renderFaq(data.faq);
-    if (data.blog) html += renderBlog(data.blog);
 
+    // Official WPS tool page section order:
+    // 1. Related Tools (with Download CTA button)
     const relatedSlugs = options?.relatedSlugs
       || global.WPSToolCatalog?.getBySlug?.(slugOrKey)?.related;
     html += renderRelatedTools(slugOrKey, { ...options, relatedSlugs });
-    html += renderDownloadCta();
+
+    // 2. Why Choose
+    if (data.whyChoose) html += renderWhyChoose(data.whyChoose);
+
+    // 3. Converter Guide (if defined)
+    if (data.guide) html += renderConverterGuide(data.guide);
+
+    // 4. Blog / Learn More (not used on 3D converter pages)
+    if (data.blog && !is3d) html += renderBlog(data.blog);
+
+    // 5. FAQs
+    if (data.faq) html += renderFaq(data.faq);
+
     container.innerHTML = rewriteAssetsInHtml(html);
     initFaqAccordion(container);
     global.WPSLinks?.wireDownloadTriggers(container);

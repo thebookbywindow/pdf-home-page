@@ -205,7 +205,9 @@
     let hideTimer;
     const showTip = () => {
       clearTimeout(hideTimer);
-      const rules = global.WPSQuotaFlow?.getQuotaRules?.();
+      const rules = global.WPSQuotaFlow?.getQuotaRules?.(
+        document.body?.dataset?.toolSlug || ""
+      );
       if (rules && tip) {
         tip.innerHTML = `
           <div class="quota-tooltip-head">

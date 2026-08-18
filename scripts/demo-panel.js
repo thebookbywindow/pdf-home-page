@@ -6,7 +6,8 @@
   const STORAGE_KEY = "wps_demo_panel_hidden";
 
   function isHidden() {
-    return sessionStorage.getItem(STORAGE_KEY) === "1";
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    return stored === null ? true : stored === "1";
   }
 
   function setHidden(hidden) {
@@ -18,7 +19,10 @@
     const panel = document.querySelector(".demo-panel");
     const toggle = document.querySelector(".demo-panel-toggle");
     const hidden = isHidden();
-    if (panel) panel.classList.toggle("is-hidden", hidden);
+    if (panel) {
+      panel.classList.toggle("is-hidden", hidden);
+      panel.setAttribute("aria-hidden", hidden ? "true" : "false");
+    }
     if (toggle) {
       toggle.hidden = !hidden;
       toggle.setAttribute("aria-label", hidden ? "Show demo controls" : "Hide demo controls");

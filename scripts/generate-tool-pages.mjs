@@ -40,9 +40,9 @@ function escapeHtml(s) {
 
 function demoPanelHtml() {
   return `
-  <aside class="demo-panel" aria-label="Demo controls">
+  <aside class="demo-panel is-hidden" aria-label="Demo controls" aria-hidden="true">
     <h4>Demo controls (for R&amp;D)</h4>
-    <p style="margin:0 0 8px;color:var(--soft-muted)">Intercept test scenarios:</p>
+    <p style="margin:0 0 8px;color:var(--soft-muted)">Quota &amp; Intercept scenarios:</p>
     <div class="demo-scenario-btns" id="demo-scenarios">
       <button type="button" data-scenario="guest_exhausted">① Free — quota exhausted</button>
       <button type="button" data-scenario="guest_file_limit">② Free — file size limit</button>
@@ -50,7 +50,15 @@ function demoPanelHtml() {
       <button type="button" data-scenario="member_ok">④ Pro+ — normal use</button>
       <button type="button" data-scenario="member_file_limit">⑤ Pro+ — file &gt;200 MB</button>
     </div>
-    <label>Uses left (manual)
+    <p style="margin:8px 0 4px;color:var(--soft-muted)">ModelConverter API scenarios:</p>
+    <div class="demo-scenario-btns" id="mc-scenarios">
+      <button type="button" data-mc-scenario="normal" class="is-active">3D ① Normal API Pipeline</button>
+      <button type="button" data-mc-scenario="403">3D ② 403 Capability Not Granted</button>
+      <button type="button" data-mc-scenario="422_LIMIT">3D ③ 422 Limit Exceeded</button>
+      <button type="button" data-mc-scenario="422_VALIDATION">3D ④ 422 Checksum Failed</button>
+      <button type="button" data-mc-scenario="FAILED">3D ⑤ Task FAILED</button>
+    </div>
+    <label style="margin-top:8px">Uses left (manual)
       <select id="demo-uses">
         <option value="10">10</option>
         <option value="9">9</option>
@@ -72,6 +80,7 @@ function demoPanelHtml() {
 function scriptsHtml() {
   return `
   <script src="../scripts/wps-links.js"></script>
+  <script src="../scripts/model-converter-client.js"></script>
   <script src="../scripts/format-hubs-3d.js"></script>
   <script src="../scripts/tool-catalog.js"></script>
   <script src="../scripts/tool-routes.js"></script>
@@ -101,18 +110,23 @@ function ratioPickerHtml(tool) {
 function formatHubHtml(tool) {
   // Only Convert PDF + 3D hubs expose From/To chips. Fixed A→B tools use the regular upload UI.
   if (tool.type !== "pdf-convert" && tool.type !== "3d-conversion") return "";
+  const is3d = tool.type === "3d-conversion";
+  const gridClass = is3d ? "format-hub-grid format-hub-grid--aligned" : "format-hub-grid";
+  const fromClass = is3d ? "format-group format-group--from" : "format-group";
+  const toClass = is3d ? "format-group format-group--to" : "format-group";
+  const titleClass = is3d ? ' class="format-group-title"' : "";
   return `
         <div class="format-hub" id="format-hub">
-          <div class="format-hub-grid">
-            <div class="format-group">
-              <h4>Convert from</h4>
+          <div class="${gridClass}">
+            <div class="${fromClass}">
+              <h4${titleClass}>Convert from</h4>
               <div class="format-chips" id="chips-from" role="listbox" aria-label="Input format"></div>
             </div>
             <div class="format-arrow" aria-hidden="true">
               <span class="material-symbols-rounded">arrow_forward</span>
             </div>
-            <div class="format-group">
-              <h4>Convert to</h4>
+            <div class="${toClass}">
+              <h4${titleClass}>Convert to</h4>
               <div class="format-chips" id="chips-to" role="listbox" aria-label="Output format"></div>
             </div>
           </div>
@@ -120,10 +134,8 @@ function formatHubHtml(tool) {
 }
 
 function etaBannerHtml(tool) {
-  if (tool.type !== "3d-conversion") {
-    return `<div class="eta-banner" id="eta-banner" hidden></div>`;
-  }
-  return `<div class="eta-banner" id="eta-banner">Estimated time for this conversion: ${escapeHtml(tool.etaRange || "")}</div>`;
+  if (tool.type === "3d-conversion") return "";
+  return `<div class="eta-banner" id="eta-banner" hidden></div>`;
 }
 
 function stepsHtml(tool) {
@@ -131,6 +143,121 @@ function stepsHtml(tool) {
   return labels.map((label, i) =>
     `<span class="workspace-step${i === 0 ? " is-active" : ""}"><span class="step-num">${i + 1}</span> ${escapeHtml(label)}</span>`
   ).join("\n            ");
+}
+
+function heroHtml(tool, h1, is3d) {
+  if (!is3d) {
+    return `
+    <section class="tool-hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../homepage.html">Home</a>
+        <span aria-hidden="true">›</span>
+        <span id="crumb-title">${escapeHtml(tool.title)}</span>
+      </nav>
+      <h1 id="page-title">${escapeHtml(h1)}</h1>
+      <p class="subtitle" id="page-subtitle">${escapeHtml(tool.subtitle)}</p>
+    </section>`;
+  }
+
+  return `
+    <section class="tool-hero tool-hero-v2">
+      <div class="tool-hero-orbs" aria-hidden="true">
+        <span class="tool-hero-orb tool-hero-orb--a"></span>
+        <span class="tool-hero-orb tool-hero-orb--b"></span>
+        <span class="tool-hero-orb tool-hero-orb--c"></span>
+      </div>
+      <nav class="breadcrumb bread-box" aria-label="Breadcrumb">
+        <a class="bread-home" href="../homepage.html">Home</a>
+        <span class="bread-chevron" aria-hidden="true">›</span>
+        <span class="bread-tool" id="crumb-title">${escapeHtml(h1)}</span>
+      </nav>
+      <div class="hero-copy">
+        <h1 class="title" id="page-title">${escapeHtml(h1)}</h1>
+        <p class="subtitle desc" id="page-subtitle">${escapeHtml(tool.subtitle)}</p>
+      </div>
+    </section>`;
+}
+
+function quotaControlsHtml(is3d = false) {
+  const icon = is3d ? "auto_awesome" : "bolt";
+  const quotaText = is3d
+    ? "Daily <strong>10</strong> of 10"
+    : "<strong>10</strong> of 10 free uses left today";
+  const quotaAction = is3d
+    ? '<button class="quota-info-btn" type="button" id="quota-info" aria-label="Get more uses" title="View quota options">Get more uses</button>'
+    : '<button class="quota-info-btn" type="button" id="quota-info" aria-label="Quota rules" title="Quota rules">i</button>';
+
+  return `
+          <div class="quota-wrap">
+            <span class="quota-badge" id="quota-badge">
+              <span class="material-symbols-rounded quota-badge-icon" aria-hidden="true">${icon}</span>
+              <span id="quota-text">${quotaText}</span>
+            </span>
+            ${quotaAction}
+            <div class="quota-tooltip" id="quota-tooltip" role="tooltip"></div>
+          </div>`;
+}
+
+function workspaceToolbarHtml(tool, is3d) {
+  if (is3d) return "";
+  return `
+        <div class="workspace-toolbar">
+          <div class="workspace-steps" id="workspace-steps">
+            ${stepsHtml(tool)}
+          </div>
+${quotaControlsHtml(false)}
+        </div>`;
+}
+
+function quotaBarHtml(is3d) {
+  if (!is3d) return "";
+  return `
+      <div class="tool-quota-bar">
+        <div class="tool-quota-bar__row">
+${quotaControlsHtml(true)}
+        </div>
+      </div>`;
+}
+
+function uploadZoneHtml({ dropLabel, fileNoun, dropSub, selectLabel, uploadIcon, is3d, fileBadge }) {
+  if (!is3d) {
+    return `
+          <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon" aria-hidden="true"><span class="material-symbols-rounded">${escapeHtml(uploadIcon)}</span></div>
+            <h3 id="drop-title">Drop ${escapeHtml(dropLabel)} ${fileNoun} here</h3>
+            <p id="drop-sub">${escapeHtml(dropSub)}</p>
+            <button class="btn-upload" type="button" id="btn-select-file">
+              <span class="material-symbols-rounded">add</span>
+              <span id="select-label">${escapeHtml(selectLabel)}</span>
+            </button>
+          </div>`;
+  }
+
+  return `
+          <div class="upload-zone tool-dashed-zone hero-dropzone" id="upload-zone">
+            <svg class="tool-drop-outline" viewBox="0 0 1150 526" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="1" y="1" width="1148" height="524" rx="14" ry="14" vector-effect="non-scaling-stroke"></rect>
+            </svg>
+            <div class="hero-center">
+              <div class="upload-icon hero-icon-tile" aria-hidden="true">
+                <span class="hero-file-sheet">
+                  <span class="hero-file-badge">${escapeHtml(fileBadge)}</span>
+                </span>
+              </div>
+              <div class="hero-copy-block">
+                <h3 class="hero-upload-title" id="drop-title">Drop ${escapeHtml(dropLabel)} ${fileNoun} here</h3>
+                <p class="hero-upload-sub" id="drop-sub">${escapeHtml(dropSub)}</p>
+              </div>
+              <button class="btn-upload hero-select-btn" type="button" id="btn-select-file">
+                <span class="material-symbols-rounded">add</span>
+                <span id="select-label">${escapeHtml(selectLabel)}</span>
+              </button>
+            </div>
+            <p class="upload-privacy-note">
+              <span class="material-symbols-rounded" aria-hidden="true">shield</span>
+              Your files stay private and are deleted after processing.
+            </p>
+          </div>`;
 }
 
 function metaDescription(tool, crawl) {
@@ -164,6 +291,24 @@ function renderPage(tool) {
   const downloadLabel = tool.downloadLabel || "Download result";
   const singleFile = Boolean(tool.singleFile) || tool.workflow === "split" || tool.workflow === "sign";
   const multipleAttr = singleFile ? "" : " multiple";
+  const fileNoun = singleFile ? "file" : "files";
+  const is3d = tool.type === "3d-conversion";
+  const bodyClass = is3d ? "tool-page tool-page--3d-parity" : "tool-page";
+  const parityStylesheet = is3d
+    ? '\n  <link rel="stylesheet" href="../tool-3d-parity.css" />'
+    : "";
+  const hero = heroHtml(tool, h1, is3d);
+  const workspaceControlsOpen = is3d ? '\n      <div class="workspace-controls">' : "";
+  const workspaceControlsClose = is3d ? "\n      </div>" : "";
+  const uploadZone = uploadZoneHtml({
+    dropLabel,
+    fileNoun,
+    dropSub,
+    selectLabel,
+    uploadIcon,
+    is3d,
+    fileBadge: tool.title.charAt(0)
+  });
 
   return `<!DOCTYPE html>
 <html lang="en-US">
@@ -174,56 +319,29 @@ function renderPage(tool) {
   <title>${escapeHtml(pageTitle)}</title>
   <meta name="description" content="${escapeHtml(desc)}" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;600;700&family=Roboto:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="../site-chrome.css" />
   <link rel="stylesheet" href="../tool-shell.css" />
-  <link rel="stylesheet" href="../tool-home-sections.css" />
+  <link rel="stylesheet" href="../tool-home-sections.css" />${parityStylesheet}
 </head>
-<body class="tool-page" data-tool-slug="${escapeHtml(tool.slug)}" data-tool-id="${escapeHtml(tool.slug)}" data-asset-base="../">
+<body class="${bodyClass}" data-tool-slug="${escapeHtml(tool.slug)}" data-tool-id="${escapeHtml(tool.slug)}" data-asset-base="../">
   <div id="site-chrome-header"></div>
 
   <main class="tool-page-main">
-    <section class="tool-hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../homepage.html">Home</a>
-        <span aria-hidden="true">›</span>
-        <span id="crumb-title">${escapeHtml(tool.title)}</span>
-      </nav>
-      <h1 id="page-title">${escapeHtml(h1)}</h1>
-      <p class="subtitle" id="page-subtitle">${escapeHtml(tool.subtitle)}</p>
-    </section>
+${hero}
 
-    <section class="tool-workspace-wrap">
-      <div class="workspace-card">
-        ${formatHubHtml(tool)}
-        ${etaBannerHtml(tool)}
-
-        <div class="workspace-toolbar">
-          <div class="workspace-steps" id="workspace-steps">
-            ${stepsHtml(tool)}
-          </div>
-          <div class="quota-wrap">
-            <span class="quota-badge" id="quota-badge">
-              <span class="material-symbols-rounded" style="font-size:16px">bolt</span>
-              <span id="quota-text"><strong>10</strong> of 10 free uses left today</span>
-            </span>
-            <button class="quota-info-btn" type="button" id="quota-info" aria-label="Quota rules" title="Quota rules">i</button>
-            <div class="quota-tooltip" id="quota-tooltip" role="tooltip"></div>
-          </div>
-        </div>
+    <section class="tool-workspace-wrap${is3d ? " tool-workspace-wrap--3d" : ""}">
+${quotaBarHtml(is3d)}
+      <div class="workspace-card${is3d ? " workspace-card--3d" : ""}">${workspaceControlsOpen}
+${formatHubHtml(tool)}
+${etaBannerHtml(tool)}
+${workspaceToolbarHtml(tool, is3d)}
+${workspaceControlsClose}
 
         <div class="workspace-body" id="workspace-body">
           ${ratioPickerHtml(tool)}
-          <div class="upload-zone" id="upload-zone">
-            <div class="upload-icon" aria-hidden="true"><span class="material-symbols-rounded">${escapeHtml(uploadIcon)}</span></div>
-            <h3 id="drop-title">Drop ${escapeHtml(dropLabel)} files here</h3>
-            <p id="drop-sub">${escapeHtml(dropSub)}</p>
-            <button class="btn-upload" type="button" id="btn-select-file">
-              <span class="material-symbols-rounded">add</span>
-              <span id="select-label">${escapeHtml(selectLabel)}</span>
-            </button>
-          </div>
+${uploadZone}
 
           <div class="processing-panel" id="processing-panel" hidden>
             <div class="processing-panel-head">

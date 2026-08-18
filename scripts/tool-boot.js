@@ -69,6 +69,7 @@
   function bindDemoPanel(renderUI, resetResult) {
     const Q = global.WPSQuotaFlow;
     const scenarios = qs("demo-scenarios");
+    const mcScenarios = qs("mc-scenarios");
     if (!scenarios || !Q) return;
 
     scenarios.addEventListener("click", (e) => {
@@ -81,6 +82,21 @@
       renderUI();
     });
 
+    mcScenarios?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-mc-scenario]");
+      if (!btn) return;
+      mcScenarios.querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      const sc = btn.dataset.mcScenario;
+      if (sc === "normal") {
+        sessionStorage.removeItem("mc_demo_scenario");
+      } else {
+        sessionStorage.setItem("mc_demo_scenario", sc);
+      }
+      resetResult();
+      renderUI();
+    });
+
     qs("demo-uses")?.addEventListener("change", (e) => {
       Q.setUsesRemaining(parseInt(e.target.value, 10));
       resetResult();
@@ -89,7 +105,9 @@
 
     qs("demo-reset")?.addEventListener("click", () => {
       Q.reset();
+      sessionStorage.removeItem("mc_demo_scenario");
       scenarios.querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
+      mcScenarios?.querySelectorAll("button").forEach((b, idx) => b.classList.toggle("is-active", idx === 0));
       resetResult();
       renderUI();
     });
@@ -97,11 +115,12 @@
 
   function applyHero(tool) {
     const title = tool.pageTitle || tool.title;
+    const breadcrumbTitle = tool.type === "3d-conversion" ? title : tool.title;
     document.title = `${title} | WPS PDF Tools`;
     const crumb = qs("crumb-title");
     const h1 = qs("page-title");
     const sub = qs("page-subtitle");
-    if (crumb) crumb.textContent = tool.title;
+    if (crumb) crumb.textContent = breadcrumbTitle;
     if (h1) h1.textContent = title;
     if (sub) sub.textContent = tool.subtitle || "";
     document.body.dataset.toolId = tool.slug;
@@ -171,8 +190,14 @@
       const dropTitle = qs("drop-title");
       const dropSub = qs("drop-sub");
       const selectLabel = qs("select-label");
-      if (dropTitle) dropTitle.textContent = `Drop ${fromFormat} files here`;
-      if (dropSub) dropSub.textContent = `Convert to ${toFormat}`;
+      if (dropTitle) {
+        dropTitle.textContent = `Drop ${fromFormat} ${tool.singleFile ? "file" : "files"} here`;
+      }
+      if (dropSub) {
+        dropSub.textContent = is3d
+          ? "or click to select from your device"
+          : `Convert to ${toFormat}`;
+      }
       if (selectLabel) selectLabel.textContent = `Select ${fromFormat} File`;
       if (qs("file-input")) qs("file-input").accept = acceptFor(fromFormat);
       applyDisableState();
@@ -230,6 +255,66 @@
     }
   }
 
+  function init3dFooterAccordion() {
+    const footer = document.querySelector("#site-chrome-footer .footer");
+    if (!footer || footer.dataset.mobileAccordionReady === "true") return;
+
+    const media = global.matchMedia?.("(max-width: 768px)");
+    const entries = Array.from(footer.querySelectorAll(".footer-col")).map((column, index) => {
+      const heading = column.querySelector("h3");
+      const links = Array.from(column.children).filter((child) => child.tagName === "A");
+      if (!heading || !links.length) return null;
+
+      const panel = document.createElement("div");
+      const panelId = `footer-accordion-panel-${index + 1}`;
+      panel.className = "footer-accordion-panel";
+      panel.id = panelId;
+      links.forEach((link) => panel.appendChild(link));
+      heading.insertAdjacentElement("afterend", panel);
+
+      const label = heading.textContent.trim();
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "footer-accordion-button";
+      button.setAttribute("aria-controls", panelId);
+      button.innerHTML = `
+        <span>${label}</span>
+        <span class="material-symbols-rounded footer-accordion-icon" aria-hidden="true">expand_more</span>
+      `;
+      heading.textContent = "";
+      heading.appendChild(button);
+
+      const setExpanded = (expanded) => {
+        column.classList.toggle("is-open", expanded);
+        button.setAttribute("aria-expanded", String(expanded));
+        panel.hidden = !expanded;
+      };
+
+      button.addEventListener("click", () => {
+        if (!media?.matches) return;
+        setExpanded(button.getAttribute("aria-expanded") !== "true");
+      });
+
+      return { button, setExpanded };
+    }).filter(Boolean);
+
+    const syncViewport = () => {
+      const isMobile = Boolean(media?.matches);
+      entries.forEach(({ button, setExpanded }) => {
+        button.disabled = !isMobile;
+        setExpanded(!isMobile);
+      });
+    };
+
+    if (media?.addEventListener) {
+      media.addEventListener("change", syncViewport);
+    } else {
+      media?.addListener?.(syncViewport);
+    }
+    footer.dataset.mobileAccordionReady = "true";
+    syncViewport();
+  }
+
   async function boot() {
     const slug = document.body?.dataset?.toolSlug;
     const catalog = global.WPSToolCatalog;
@@ -246,7 +331,12 @@
     const resultTitle = document.querySelector("#result-panel h3");
     if (resultTitle && tool.resultTitle) resultTitle.textContent = tool.resultTitle;
 
+    const hasFormatHub = tool.type === "pdf-convert" || tool.type === "3d-conversion";
+    const is3d = tool.type === "3d-conversion";
+    const isConvert = hasFormatHub || Boolean(tool.fixedPair);
+
     await global.WPSSiteChrome?.mount();
+    if (is3d) init3dFooterAccordion();
     global.WPSDemoPanel?.init();
 
     const contentMount = qs("tool-content-mount");
@@ -254,9 +344,6 @@
       global.WPSToolContent.mount(slug, contentMount, { relatedSlugs: tool.related });
     }
 
-    const hasFormatHub = tool.type === "pdf-convert" || tool.type === "3d-conversion";
-    const is3d = tool.type === "3d-conversion";
-    const isConvert = hasFormatHub || Boolean(tool.fixedPair);
     let formatApi = null;
     if (hasFormatHub) {
       formatApi = setupConvertFormats(tool);
@@ -269,7 +356,9 @@
       const dropTitle = qs("drop-title");
       const dropSub = qs("drop-sub");
       const selectLabel = qs("select-label");
-      if (dropTitle) dropTitle.textContent = `Drop ${tool.defaultFrom} files here`;
+      if (dropTitle) {
+        dropTitle.textContent = `Drop ${tool.defaultFrom} ${tool.singleFile ? "file" : "files"} here`;
+      }
       if (dropSub) dropSub.textContent = `Convert to ${tool.defaultTo}`;
       if (selectLabel) selectLabel.textContent = `Select ${tool.defaultFrom} File`;
       if (qs("file-input") && tool.accept) qs("file-input").accept = tool.accept;
@@ -314,6 +403,7 @@
           : `${tool.stepLabels?.[1] || "Processing"} succeeded!`),
       sharedPipeline: Boolean(tool.sharedPipeline),
       autoProcessAfterUpload: Boolean(tool.autoProcessAfterUpload),
+      singleFile: Boolean(tool.singleFile),
       longRunning: is3d,
       etaProfile: is3d ? tool.hubId : "pdf",
       processingLabel: is3d

@@ -4,75 +4,102 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#ffffff" />
-  <title>CAD Converter Online | WPS PDF Tools</title>
-  <meta name="description" content="Convert industrial CAD formats to STEP or mesh outputs. Typical time 30s–5 min depending on model size." />
+  <title>Free CAD Converter Online | WPS PDF Tools</title>
+  <meta name="description" content="Convert CAD files between popular formats like STEP, IGES, CATIA, NX, SolidWorks and more. Simply upload your file, choose an output format, and convert it onli" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;600;700&family=Roboto:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="../site-chrome.css" />
   <link rel="stylesheet" href="../tool-shell.css" />
   <link rel="stylesheet" href="../tool-home-sections.css" />
+  <link rel="stylesheet" href="../tool-3d-parity.css" />
 </head>
-<body class="tool-page" data-tool-slug="cad-converter" data-tool-id="cad-converter" data-asset-base="../">
+<body class="tool-page tool-page--3d-parity" data-tool-slug="cad-converter" data-tool-id="cad-converter" data-asset-base="../">
   <div id="site-chrome-header"></div>
 
   <main class="tool-page-main">
-    <section class="tool-hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../homepage.html">Home</a>
-        <span aria-hidden="true">›</span>
-        <span id="crumb-title">CAD Converter</span>
+
+    <section class="tool-hero tool-hero-v2">
+      <div class="tool-hero-orbs" aria-hidden="true">
+        <span class="tool-hero-orb tool-hero-orb--a"></span>
+        <span class="tool-hero-orb tool-hero-orb--b"></span>
+        <span class="tool-hero-orb tool-hero-orb--c"></span>
+      </div>
+      <nav class="breadcrumb bread-box" aria-label="Breadcrumb">
+        <a class="bread-home" href="../homepage.html">Home</a>
+        <span class="bread-chevron" aria-hidden="true">›</span>
+        <span class="bread-tool" id="crumb-title">Free CAD Converter Online</span>
       </nav>
-      <h1 id="page-title">CAD Converter Online</h1>
-      <p class="subtitle" id="page-subtitle">Convert industrial CAD formats to STEP or mesh outputs. Typical time 30s–5 min depending on model size.</p>
+      <div class="hero-copy">
+        <h1 class="title" id="page-title">Free CAD Converter Online</h1>
+        <p class="subtitle desc" id="page-subtitle">Convert CAD files between popular formats like STEP, IGES, CATIA, NX, SolidWorks and more. Simply upload your file, choose an output format, and convert it online in seconds.</p>
+      </div>
     </section>
 
-    <section class="tool-workspace-wrap">
-      <div class="workspace-card">
-        
+    <section class="tool-workspace-wrap tool-workspace-wrap--3d">
+
+      <div class="tool-quota-bar">
+        <div class="tool-quota-bar__row">
+
+          <div class="quota-wrap">
+            <span class="quota-badge" id="quota-badge">
+              <span class="material-symbols-rounded quota-badge-icon" aria-hidden="true">auto_awesome</span>
+              <span id="quota-text">Daily <strong>10</strong> of 10</span>
+            </span>
+            <button class="quota-info-btn" type="button" id="quota-info" aria-label="Get more uses" title="View quota options">Get more uses</button>
+            <div class="quota-tooltip" id="quota-tooltip" role="tooltip"></div>
+          </div>
+        </div>
+      </div>
+      <div class="workspace-card workspace-card--3d">
+      <div class="workspace-controls">
+
         <div class="format-hub" id="format-hub">
-          <div class="format-hub-grid">
-            <div class="format-group">
-              <h4>Convert from</h4>
+          <div class="format-hub-grid format-hub-grid--aligned">
+            <div class="format-group format-group--from">
+              <h4 class="format-group-title">Convert from</h4>
               <div class="format-chips" id="chips-from" role="listbox" aria-label="Input format"></div>
             </div>
             <div class="format-arrow" aria-hidden="true">
               <span class="material-symbols-rounded">arrow_forward</span>
             </div>
-            <div class="format-group">
-              <h4>Convert to</h4>
+            <div class="format-group format-group--to">
+              <h4 class="format-group-title">Convert to</h4>
               <div class="format-chips" id="chips-to" role="listbox" aria-label="Output format"></div>
             </div>
           </div>
         </div>
-        <div class="eta-banner" id="eta-banner">Estimated time for this conversion: 30s–5 min</div>
 
-        <div class="workspace-toolbar">
-          <div class="workspace-steps" id="workspace-steps">
-            <span class="workspace-step is-active"><span class="step-num">1</span> Choose format</span>
-            <span class="workspace-step"><span class="step-num">2</span> Upload</span>
-            <span class="workspace-step"><span class="step-num">3</span> Download</span>
-          </div>
-          <div class="quota-wrap">
-            <span class="quota-badge" id="quota-badge">
-              <span class="material-symbols-rounded" style="font-size:16px">bolt</span>
-              <span id="quota-text"><strong>10</strong> of 10 free uses left today</span>
-            </span>
-            <button class="quota-info-btn" type="button" id="quota-info" aria-label="Quota rules" title="Quota rules">i</button>
-            <div class="quota-tooltip" id="quota-tooltip" role="tooltip"></div>
-          </div>
-        </div>
+
+
+      </div>
 
         <div class="workspace-body" id="workspace-body">
           
-          <div class="upload-zone" id="upload-zone">
-            <div class="upload-icon" aria-hidden="true"><span class="material-symbols-rounded">architecture</span></div>
-            <h3 id="drop-title">Drop STEP files here</h3>
-            <p id="drop-sub">or click to select from your device</p>
-            <button class="btn-upload" type="button" id="btn-select-file">
-              <span class="material-symbols-rounded">add</span>
-              <span id="select-label">Select STEP File</span>
-            </button>
+
+          <div class="upload-zone tool-dashed-zone hero-dropzone" id="upload-zone">
+            <svg class="tool-drop-outline" viewBox="0 0 1150 526" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="1" y="1" width="1148" height="524" rx="14" ry="14" vector-effect="non-scaling-stroke"></rect>
+            </svg>
+            <div class="hero-center">
+              <div class="upload-icon hero-icon-tile" aria-hidden="true">
+                <span class="hero-file-sheet">
+                  <span class="hero-file-badge">C</span>
+                </span>
+              </div>
+              <div class="hero-copy-block">
+                <h3 class="hero-upload-title" id="drop-title">Drop STEP file here</h3>
+                <p class="hero-upload-sub" id="drop-sub">or click to select from your device</p>
+              </div>
+              <button class="btn-upload hero-select-btn" type="button" id="btn-select-file">
+                <span class="material-symbols-rounded">add</span>
+                <span id="select-label">Select STEP File</span>
+              </button>
+            </div>
+            <p class="upload-privacy-note">
+              <span class="material-symbols-rounded" aria-hidden="true">shield</span>
+              Your files stay private and are deleted after processing.
+            </p>
           </div>
 
           <div class="processing-panel" id="processing-panel" hidden>
@@ -143,16 +170,16 @@
       </div>
     </section>
 
-    <input type="file" id="file-input" multiple hidden />
+    <input type="file" id="file-input" hidden />
     <div id="tool-content-mount"></div>
   </main>
 
   <div id="site-chrome-footer"></div>
 
   
-  <aside class="demo-panel" aria-label="Demo controls">
+  <aside class="demo-panel is-hidden" aria-label="Demo controls" aria-hidden="true">
     <h4>Demo controls (for R&amp;D)</h4>
-    <p style="margin:0 0 8px;color:var(--soft-muted)">Intercept test scenarios:</p>
+    <p style="margin:0 0 8px;color:var(--soft-muted)">Quota &amp; Intercept scenarios:</p>
     <div class="demo-scenario-btns" id="demo-scenarios">
       <button type="button" data-scenario="guest_exhausted">① Free — quota exhausted</button>
       <button type="button" data-scenario="guest_file_limit">② Free — file size limit</button>
@@ -160,7 +187,15 @@
       <button type="button" data-scenario="member_ok">④ Pro+ — normal use</button>
       <button type="button" data-scenario="member_file_limit">⑤ Pro+ — file &gt;200 MB</button>
     </div>
-    <label>Uses left (manual)
+    <p style="margin:8px 0 4px;color:var(--soft-muted)">ModelConverter API scenarios:</p>
+    <div class="demo-scenario-btns" id="mc-scenarios">
+      <button type="button" data-mc-scenario="normal" class="is-active">3D ① Normal API Pipeline</button>
+      <button type="button" data-mc-scenario="403">3D ② 403 Capability Not Granted</button>
+      <button type="button" data-mc-scenario="422_LIMIT">3D ③ 422 Limit Exceeded</button>
+      <button type="button" data-mc-scenario="422_VALIDATION">3D ④ 422 Checksum Failed</button>
+      <button type="button" data-mc-scenario="FAILED">3D ⑤ Task FAILED</button>
+    </div>
+    <label style="margin-top:8px">Uses left (manual)
       <select id="demo-uses">
         <option value="10">10</option>
         <option value="9">9</option>
@@ -179,6 +214,7 @@
   </aside>
   
   <script src="../scripts/wps-links.js"></script>
+  <script src="../scripts/model-converter-client.js"></script>
   <script src="../scripts/format-hubs-3d.js"></script>
   <script src="../scripts/tool-catalog.js"></script>
   <script src="../scripts/tool-routes.js"></script>
