@@ -24,15 +24,12 @@
               <span class="compress-single__filename" id="compress-single-done-name"></span>
             </div>
             <div class="compress-single__diff" id="compress-single-done-stats"></div>
-            <p class="result-client-hint compress-single__cloud-hint" id="compress-single-cloud-hint" hidden>
-              Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view and edit.
+            <p class="result-client-hint compress-single__cloud-hint" id="compress-single-cloud-hint">
+              Click Download to download both the converted file and WPS Office.
             </p>
             <div class="compress-single__btns">
               <button class="compress-single__btn compress-single__btn--primary" type="button" id="compress-single-download">
                 <img class="compress-single__btn-icon" :src="downloadIcon" alt="" width="24" height="24"><span>Download</span>
-              </button>
-              <button class="compress-single__btn compress-single__btn--secondary" type="button" id="compress-single-wps">
-                <img class="compress-single__btn-icon" :src="wpsIcon" alt="" width="24" height="24"><span>Download WPS Office</span>
               </button>
             </div>
           </div>
@@ -55,5 +52,4 @@ import loadingIcon from "../../../images/tool-live/compress/loading.svg";
 import pdfIcon from "../../../images/tool-hero/pdf-local-format-48.svg";
 import successIcon from "../../../images/tool-live/compress/success-check.svg";
 import downloadIcon from "../../../images/tool-live/compress/tool-download-white.svg";
-import wpsIcon from "../../../images/tool-live/compress/tool-download-wps.svg";
 </script>

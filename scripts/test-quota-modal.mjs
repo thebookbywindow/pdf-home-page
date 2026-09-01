@@ -33,11 +33,15 @@ assert.ok(loginStart >= 0 && loginEnd > loginStart, "unauthenticated PDF login m
 const loginModalSource = source.slice(loginStart, loginEnd);
 assert.match(loginModalSource, /id\s*=\s*"login-required-modal"/);
 assert.match(loginModalSource, />Sign in to continue</);
-assert.match(loginModalSource, /Please sign in before uploading a PDF file/);
+assert.match(loginModalSource, /Sign in to continue uploading your file/);
 assert.match(loginModalSource, /data-login-required-sign-in/);
 assert.match(source, /interceptUnauthenticatedPdf/);
+assert.match(source, /const resume = loginContinuation/);
+assert.match(source, /resume\?\.\(\)/);
 assert.match(toolPageSource, /btnSelectFile\?\.addEventListener\("click", \(\) => \{[\s\S]*?els\.fileInput\.click\(\)/);
+assert.match(toolPageSource, /interceptUnauthenticatedPdf\?\.\(list, \(\) => startUpload\(list\)\)/);
 assert.match(workflowSource, /function acceptFiles\(files\)[\s\S]*?interceptUnauthenticatedPdf/);
+assert.match(workflowSource, /interceptUnauthenticatedPdf\?\.\(list, \(\) => onFiles\(list\)\)/);
 assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
 assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
 

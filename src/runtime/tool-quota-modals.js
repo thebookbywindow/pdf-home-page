@@ -5,6 +5,7 @@
 (function (global) {
   const BUY_CTA = "Upgrade to Pro+";
   const BUY_URL = "https://www.wps.com/buy/";
+  let loginContinuation = null;
 
   function escapeHtml(s) {
     return String(s || "")
@@ -249,7 +250,7 @@
           </div>
           <h2 class="guest-login-dialog__title" id="login-required-modal-title">Sign in to continue</h2>
           <p class="guest-login-dialog__sub" id="login-required-modal-copy">
-            Please sign in before uploading a PDF file.
+            Sign in to continue uploading your file.
           </p>
         </div>
         <div class="guest-login-dialog__actions">
@@ -264,10 +265,17 @@
       </div>`;
     document.body.appendChild(backdrop);
     const close = () => { backdrop.hidden = true; };
-    bindModalClose(backdrop, close);
+    const cancel = () => {
+      loginContinuation = null;
+      close();
+    };
+    bindModalClose(backdrop, cancel);
     backdrop.querySelector("[data-login-required-sign-in]")?.addEventListener("click", () => {
+      const resume = loginContinuation;
+      loginContinuation = null;
       links()?.openSignIn();
       close();
+      resume?.();
     });
     return backdrop;
   }
@@ -446,11 +454,16 @@
     ensureLoginRequiredModal().hidden = false;
   }
 
-  function interceptUnauthenticatedPdf(files) {
+  function setLoginContinuation(callback) {
+    loginContinuation = typeof callback === "function" ? callback : null;
+  }
+
+  function interceptUnauthenticatedPdf(files, onLogin) {
     const state = global.WPSQuotaFlow?.getState?.();
     const list = Array.from(files || []).filter(Boolean);
     const containsPdf = list.some((file) => file.type === "application/pdf" || /\.pdf$/i.test(file.name || ""));
     if (!containsPdf || state?.loggedIn) return false;
+    setLoginContinuation(onLogin);
     openLoginRequired();
     return true;
   }
@@ -516,6 +529,7 @@
     wireQuotaTooltipActions,
     openQuotaExhausted,
     openLoginRequired,
+    setLoginContinuation,
     interceptUnauthenticatedPdf,
     openProUpgrade,
     openMultiFileLimit,

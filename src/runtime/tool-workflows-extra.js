@@ -425,7 +425,7 @@
     function acceptFiles(files) {
       const list = Array.from(files || []).filter(Boolean);
       if (!list.length) return;
-      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list)) return;
+      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list, () => onFiles(list))) return;
       if (global.WPSQuotaModals?.interceptUpload(list, document.body?.dataset?.toolSlug || ctx.tool?.slug || "")) return;
       onFiles(list);
     }

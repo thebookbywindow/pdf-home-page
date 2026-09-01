@@ -331,6 +331,8 @@
     const autoProcessAfterUpload = config.autoProcessAfterUpload !== false;
     const sharedPipeline = Boolean(config.sharedPipeline);
     const singleFile = Boolean(config.singleFile);
+    let leaveConfirmModal = null;
+    let leaveConfirmAction = null;
     const UPLOAD_PORTION = 0.35;
     const batchActionLabel = config.batchActionLabel
       || (config.mode === "compress" ? "Compress" : "Convert");
@@ -388,6 +390,61 @@
       if (card && host) host.insertBefore(wrap, card.nextSibling);
       else document.getElementById("workspace-body")?.parentElement?.appendChild(wrap);
       return wrap;
+    }
+
+    function ensureLeaveConfirmModal() {
+      if (leaveConfirmModal) return leaveConfirmModal;
+      const base = global.WPSToolCatalog?.assetBase?.() || document.body?.dataset?.assetBase || "";
+      const assetBase = base && !base.endsWith("/") ? `${base}/` : base;
+      leaveConfirmModal = document.createElement("div");
+      leaveConfirmModal.id = "leave-confirm-modal";
+      leaveConfirmModal.className = "leave-confirm-modal-backdrop";
+      leaveConfirmModal.hidden = true;
+      leaveConfirmModal.innerHTML = `
+        <div class="leave-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="leave-confirm-title" aria-describedby="leave-confirm-copy">
+          <div class="leave-confirm-modal__top">
+            <button class="leave-confirm-modal__close" type="button" data-leave-cancel aria-label="Close">
+              <img src="${assetBase}images/tool-live/compress/close-icon.svg" alt="">
+            </button>
+          </div>
+          <div class="leave-confirm-modal__body">
+            <div class="leave-confirm-modal__title-row">
+              <img class="leave-confirm-modal__warning" src="${assetBase}images/tool-live/compress/warn-shape.svg" alt="">
+              <h2 class="leave-confirm-modal__title" id="leave-confirm-title">Cancel Current Task?</h2>
+            </div>
+            <p class="leave-confirm-modal__copy" id="leave-confirm-copy">
+              Your current progress will not be saved if you cancel now.
+            </p>
+          </div>
+          <div class="leave-confirm-modal__actions">
+            <button class="leave-confirm-modal__btn leave-confirm-modal__btn--leave" type="button" data-leave-confirm>Cancel Task</button>
+            <button class="leave-confirm-modal__btn leave-confirm-modal__btn--cancel" type="button" data-leave-cancel>Continue Task</button>
+          </div>
+        </div>`;
+      document.body.appendChild(leaveConfirmModal);
+      const close = () => {
+        leaveConfirmAction = null;
+        leaveConfirmModal.hidden = true;
+      };
+      leaveConfirmModal.addEventListener("click", (event) => {
+        if (event.target === leaveConfirmModal || event.target.closest("[data-leave-cancel]")) close();
+      });
+      leaveConfirmModal.querySelector("[data-leave-confirm]")?.addEventListener("click", () => {
+        const action = leaveConfirmAction;
+        close();
+        action?.();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && leaveConfirmModal && !leaveConfirmModal.hidden) close();
+      });
+      return leaveConfirmModal;
+    }
+
+    function openLeaveConfirm(onConfirm) {
+      const modal = ensureLeaveConfirmModal();
+      leaveConfirmAction = onConfirm;
+      modal.hidden = false;
+      modal.querySelector("[data-leave-cancel]")?.focus();
     }
 
     function isOfficialShell() {
@@ -682,9 +739,20 @@
       }
       if (done) {
         done.hidden = !(inSingle && batchPhase === "done");
-        if (directDownload) directDownload.hidden = lastProcessingSource === "wps-office";
+        const clientOnlyResult = lastProcessingSource === "wps-office";
+        if (directDownload) {
+          directDownload.hidden = false;
+          directDownload.dataset.clientOnly = clientOnlyResult ? "true" : "false";
+          const downloadLabel = directDownload.querySelector("span");
+          if (downloadLabel) downloadLabel.textContent = clientOnlyResult ? "Download WPS Office" : "Download";
+        }
         if (cloudHint) {
-          cloudHint.hidden = !(inSingle && batchPhase === "done" && lastProcessingSource === "wps-office");
+          cloudHint.hidden = !(inSingle && batchPhase === "done");
+          if (inSingle && batchPhase === "done") {
+            cloudHint.textContent = clientOnlyResult
+              ? "Your Converted PDF is saved to WPS Cloud Documents. Download WPS Office to view and edit it there."
+              : "Click Download to download both the converted file and WPS Office.";
+          }
         }
         const item = batchItems[0];
         if (inSingle && batchPhase === "done" && item?.result) {
@@ -705,6 +773,7 @@
           if (dl) {
             dl.dataset.downloadUrl = item.downloadUrl || "";
             dl.dataset.downloadName = item.result.filename;
+            if (clientOnlyResult) dl.dataset.downloadUrl = "";
           }
         }
       }
@@ -1058,7 +1127,7 @@
       }, list[0], () => token !== runToken);
       if (token !== runToken) return;
       if (!ok) {
-        handleWorkspaceBack();
+        resetWorkspace();
         return;
       }
       batchItems.forEach((item) => {
@@ -1068,6 +1137,9 @@
       batchPhase = "ready";
       renderBatchList();
       updateSteps(1);
+      if (autoProcessAfterUpload) {
+        await startCompressProcess();
+      }
     }
 
     async function startCompressProcess() {
@@ -1146,7 +1218,7 @@
         );
         return;
       }
-      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list)) return;
+      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list, () => startUpload(list))) return;
       if (interceptFiles(list)) return;
 
       if (isCompressShell()) {
@@ -1200,12 +1272,22 @@
       renderUI();
     }
 
-    function handleWorkspaceBack() {
+    function resetWorkspace() {
       runToken += 1;
       resetResult();
       setView("upload");
       updateSteps(0);
       renderUI();
+    }
+
+    function handleWorkspaceBack() {
+      const processing = isCompressShell()
+        && (batchPhase === "uploading" || batchPhase === "processing");
+      if (processing) {
+        openLeaveConfirm(resetWorkspace);
+        return;
+      }
+      resetWorkspace();
     }
 
     function handleUploadBack() {
@@ -1244,11 +1326,7 @@
       const stillActive = batchItems.some((i) => i.status === "working" || i.status === "queued");
       const doneCount = batchItems.filter((i) => i.status === "done").length;
       if (!stillActive && !doneCount) {
-        runToken += 1;
-        clearBatch();
-        setView("upload");
-        updateSteps(0);
-        renderUI();
+        resetWorkspace();
       } else if (!stillActive && doneCount) {
         batchPhase = "done";
         renderBatchList();
@@ -1336,19 +1414,18 @@
     });
     document.getElementById("btn-batch-action")?.addEventListener("click", handleBatchAction);
     document.getElementById("btn-single-compress")?.addEventListener("click", handleBatchAction);
-    document.getElementById("compress-single-wps")?.addEventListener("click", () => {
-      Links()?.openDownload("auto");
-    });
     document.getElementById("compress-single-download")?.addEventListener("click", (event) => {
       const button = event.currentTarget;
       const href = button.dataset.downloadUrl;
-      if (!href) return;
-      const link = document.createElement("a");
-      link.href = href;
-      link.download = button.dataset.downloadName || "compressed.pdf";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      if (href && button.dataset.clientOnly !== "true") {
+        const link = document.createElement("a");
+        link.href = href;
+        link.download = button.dataset.downloadName || "compressed.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+      Links()?.openDownload("auto");
     });
     document.getElementById("btn-batch-add")?.addEventListener("click", () => {
       els.fileInput?.click();

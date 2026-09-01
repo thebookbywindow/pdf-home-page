@@ -85,7 +85,7 @@ assert.match(toolComponent, /id="eta-banner"/, "Compress PDF must preserve the s
 assert.match(toolComponent, /id="compress-flow"|CompressFlow/, "Compress PDF must keep upload/compress/download inside the dashed zone.");
 assert.match(compressFlowComponent, /id="compress-single"/, "Compress PDF must use the official single-file uploading center.");
 assert.match(compressFlowComponent, /id="compress-status-pill"/, "Compress PDF must show the official Uploading/Compressing status pill.");
-assert.match(compressFlowComponent, /id="btn-batch-action"/, "Compress PDF must wait for an explicit Compress action.");
+assert.match(compressFlowComponent, /id="btn-batch-action"/, "Compress PDF must preserve the processing action hook.");
 assert.match(compressFlowComponent, /Download WPS/, "Compress PDF success footer must match the official Download WPS control.");
 assert.match(compressFlowComponent, /id="compress-single-cloud-hint"/, "WPS Office conversions must expose the cloud-document handoff.");
 assert.match(toolComponent, /id="quota-flow-back"/, "Compress PDF must expose the official in-flow Back control.");
@@ -123,11 +123,41 @@ assert.match(
 );
 assert.match(
   compressFlowComponent,
-  /tool-download-white\.svg|tool-download-wps\.svg/,
-  "Compress PDF success actions must use the official download SVG assets."
+  /tool-download-white\.svg/,
+  "Compress PDF success action must use the official download SVG asset."
+);
+assert.match(
+  compressFlowComponent,
+  /id="compress-single-download"/,
+  "Compress PDF success state must expose the download action."
+);
+assert.doesNotMatch(
+  compressFlowComponent,
+  /id="compress-single-wps"/,
+  "Compress PDF success state must not render a separate WPS Office button."
+);
+assert.match(
+  compressFlowComponent,
+  /<span>Download<\/span>/,
+  "Compress PDF success action must use the concise Download label."
+);
+assert.match(
+  compressFlowComponent,
+  /Click Download to download both the converted file and WPS Office\./,
+  "Compress PDF success state must explain the two downloads."
 );
 
 const generatorSource = read("scripts/generate-vue-pages.mjs");
+const toolCatalogSource = read("src/runtime/tool-catalog.js");
+const compressCatalogSource = toolCatalogSource.slice(
+  toolCatalogSource.indexOf('"compress-pdf":'),
+  toolCatalogSource.indexOf('"split-pdf":')
+);
+assert.match(
+  compressCatalogSource,
+  /autoProcessAfterUpload:\s*false/,
+  "Compress PDF must wait for the user to click Compress after upload."
+);
 assert.doesNotMatch(generatorSource, /demoPanelHtml|demo-panel|demo-scenarios|demo-uses/, "Generated pages must not include R&D panel markup.");
 assert.doesNotMatch(generatorSource, /redirectHtml|legacyDir|homepage\.html|toolsDir/, "The generator must emit canonical Vue pages only.");
 assert.match(generatorSource, /canonicalToolsDir/, "The generator must target the canonical /en/pdf-tools/ tree.");
@@ -187,7 +217,27 @@ assert.match(quotaModalsSource, /colSignedIn: "Signed-in"/, "Official quota hove
 assert.match(quotaModalsSource, /downloadHint: "Saved to WPS Cloud\. Download, then open Cloud Documents"/, "Official quota hover must explain the WPS Cloud Documents path.");
 
 const toolPageSource = read("src/runtime/tool-page.js");
-assert.match(toolPageSource, /directDownload\.hidden = lastProcessingSource === "wps-office"/, "Cloud-document conversions must keep only the WPS Office download action.");
+assert.match(toolPageSource, /directDownload\.hidden = false/, "Compress PDF success state must keep the direct download action visible.");
+assert.match(
+  toolPageSource,
+  /compress-single-download[\s\S]*?link\.click\(\);[\s\S]*?Links\(\)\?\.openDownload\("auto"\)/,
+  "The success action must trigger both the converted file and WPS Office downloads."
+);
+assert.match(
+  toolPageSource,
+  /lastProcessingSource === "wps-office"/,
+  "The success state must distinguish WPS Office quota results."
+);
+assert.match(
+  toolPageSource,
+  /Your Converted PDF is saved to WPS Cloud Documents\. Download WPS Office to view and edit it there\./,
+  "WPS Office quota results must direct users to WPS Cloud Documents."
+);
+assert.match(
+  toolPageSource,
+  /href && button\.dataset\.clientOnly !== "true"/,
+  "WPS Office quota results must not download the local converted file."
+);
 assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/, "The upload state must expose remaining WPS Office uses.");
 assert.match(toolPageSource, /const showClientQuota = state\.loggedIn && !state\.isPremium/, "Guests must not receive a WPS Office quota hint.");
 assert.match(toolPageSource, /function isCompressShell\(/, "Compress flow must detect the official shell.");
@@ -203,8 +253,34 @@ assert.doesNotMatch(
   /syncCompressShell\(view\);[\s\S]*?batchPanel\.hidden = view === "upload"/,
   "Official Compress view switching must not re-show the batch panel after single-file success."
 );
-assert.match(toolPageSource, /function startCompressUpload\(/, "Compress flow must play the official uploading state before Compress.");
-assert.match(toolPageSource, /function startCompressProcess\(/, "Compress must not start until the Compress button is pressed.");
+assert.match(toolPageSource, /function startCompressUpload\(/, "Compress flow must play the official uploading state before processing.");
+assert.match(
+  toolPageSource,
+  /batchPhase = "ready";[\s\S]*?renderBatchList\(\);[\s\S]*?updateSteps\(1\);/,
+  "Compress must expose the manual Compress action after upload completes."
+);
+assert.match(
+  toolPageSource,
+  /async function handleBatchAction\(\)[\s\S]*?batchPhase !== "ready"[\s\S]*?await startCompressProcess\(\);/,
+  "Compress must start only after the ready-state action is clicked."
+);
+assert.match(toolPageSource, /function ensureLeaveConfirmModal\(/, "Compress flow must provide a leave confirmation dialog.");
+assert.match(toolPageSource, /Cancel Current Task\?/, "Leave confirmation must use the task-cancel title.");
+assert.match(toolPageSource, /Your current progress will not be saved if you cancel now\./, "Leave confirmation must explain the progress loss.");
+assert.match(toolPageSource, /data-leave-confirm>Cancel Task/, "Leave confirmation must expose the cancel action.");
+assert.match(toolPageSource, /data-leave-cancel>Continue Task/, "Leave confirmation must expose the continue action.");
+assert.match(toolPageSource, /images\/tool-live\/compress\/close-icon\.svg/, "Leave confirmation must expose the official close control.");
+assert.match(toolPageSource, /images\/tool-live\/compress\/warn-shape\.svg/, "Leave confirmation must expose the official warning icon.");
+assert.match(
+  toolPageSource,
+  /isCompressShell\(\)[\s\S]*?batchPhase === "uploading" \|\| batchPhase === "processing"/,
+  "Back must require confirmation while upload or compression is active."
+);
+assert.match(
+  flowParityCss,
+  /\.tool-page--pdf-parity \.leave-confirm-modal-backdrop[\s\S]*?\.tool-page--pdf-parity \.leave-confirm-modal \{/,
+  "Compress leave confirmation must have an official-shell modal style."
+);
 
 const quotaFlowSource = read("src/runtime/tool-quota-flow.js");
 assert.match(

@@ -1618,7 +1618,7 @@ body:is(.tool-page--3d-parity, .tool-page--pdf-parity) {
 }
 
 .tool-page--pdf-parity .compress-single__cloud-hint {
-  max-width: 360px;
+  max-width: 560px;
 }
 
 .tool-page--pdf-parity .compress-single__btns {
@@ -1886,6 +1886,216 @@ body:is(.tool-page--3d-parity, .tool-page--pdf-parity) {
 .tool-page--pdf-parity .compress-flow.is-busy .hero-select-btn,
 .tool-page--pdf-parity .compress-flow.is-done .hero-select-btn {
   display: none;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.tool-page--pdf-parity .leave-confirm-modal-backdrop[hidden] {
+  display: none !important;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal {
+  position: relative;
+  display: block;
+  width: 484px;
+  height: 233px;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  padding: 0;
+  flex-direction: column;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(13, 13, 13, 0.08);
+  text-align: center;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__top {
+  display: flex;
+  height: 56px;
+  flex: 0 0 56px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__close {
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__close img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  opacity: 0.22;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__close:hover {
+  background: #f7f7f7;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__warning {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__body {
+  display: flex;
+  height: 73px;
+  flex: 0 0 73px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 16px;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__title {
+  margin: 0;
+  color: #0d0d0d;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__copy {
+  margin: 0;
+  width: 100%;
+  color: rgba(13, 13, 13, 0.46);
+  font-size: 16px;
+  line-height: normal;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__actions {
+  display: flex;
+  height: 104px;
+  flex: 0 0 104px;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 0 42px;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__btn {
+  display: flex;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__btn--cancel {
+  border: 1px solid #0d0d0d;
+  background: #fff;
+  color: #0d0d0d;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__btn--leave {
+  background: #0d0d0d;
+  color: #fff;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__btn--cancel:hover {
+  background: #f7f7f7;
+}
+
+.tool-page--pdf-parity .leave-confirm-modal__btn--leave:hover {
+  background: #333;
+}
+
+@media (max-width: 520px) {
+  .tool-page--pdf-parity .leave-confirm-modal-backdrop {
+    width: 100vw;
+    padding: 24px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal {
+    height: auto;
+    width: 100%;
+    min-height: 262px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__top {
+    height: 60px;
+    padding: 16px 16px 0;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__close {
+    width: 44px;
+    height: 44px;
+    padding: 5px;
+    border-radius: 8px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__title-row {
+    gap: 12px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__title {
+    font-size: 22px;
+    line-height: normal;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__body {
+    height: 98px;
+    flex-basis: 98px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__copy {
+    min-height: 44px;
+    font-size: 16px;
+    line-height: normal;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__actions {
+    width: 100%;
+    height: 104px;
+    flex: 0 0 104px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 24px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__btn {
+    flex: 1 1 0;
+    height: 56px;
+    padding: 0 16px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__btn--leave {
+    width: 140px;
+  }
+
+  .tool-page--pdf-parity .leave-confirm-modal__btn--cancel {
+    width: 142px;
+  }
 }
 
 :is(.tool-page--3d-parity, .tool-page--pdf-parity) .quota-flow-back {
