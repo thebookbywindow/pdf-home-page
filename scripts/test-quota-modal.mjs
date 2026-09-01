@@ -44,5 +44,7 @@ assert.match(workflowSource, /function acceptFiles\(files\)[\s\S]*?interceptUnau
 assert.match(workflowSource, /interceptUnauthenticatedPdf\?\.\(list, \(\) => onFiles\(list\)\)/);
 assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
 assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
+assert.match(linksSource, /const clientQuotaText = document\.getElementById\("client-quota-text"\)/);
+assert.match(linksSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/);
 
 console.log("PASS quota and login modal contracts are up to date.");

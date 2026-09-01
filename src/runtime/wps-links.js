@@ -51,6 +51,14 @@
           ? `${summary.text} <span class="quota-sub">(${summary.sub})</span>`
           : summary.text;
       }
+      const clientQuotaText = document.getElementById("client-quota-text");
+      const showClientQuota = state.loggedIn && !state.isPremium;
+      if (clientQuotaText) {
+        clientQuotaText.hidden = !showClientQuota;
+        if (showClientQuota) {
+          clientQuotaText.textContent = `WPS Office: ${state.clientUsesRemaining} uses left`;
+        }
+      }
     }
     global.open(SIGN_IN_URL, "_blank", "noopener,noreferrer");
   }
