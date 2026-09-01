@@ -600,6 +600,97 @@ button { border: 0; font: inherit; cursor: pointer; }
   .multifile-modal-actions { grid-template-columns: 1fr; }
 }
 
+/* Quota exhausted — official "Unlock more" guest flow */
+.continer-wrap.is-guest-login {
+  position: fixed; inset: 0; z-index: 1200;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+}
+.continer-wrap.is-guest-login[hidden] { display: none !important; }
+.guest-login-dialog {
+  display: flex; flex-direction: column;
+  width: 484px; height: 364px; max-width: calc(100vw - 32px);
+  overflow: hidden; border-radius: 24px;
+  background: #fff; color: #0d0d0d;
+  font-family: var(--font);
+  box-shadow: 0 12px 32px rgba(13, 13, 13, 0.08);
+}
+.guest-login-dialog__top {
+  display: flex; align-items: center; justify-content: flex-end;
+  flex: 0 0 56px; box-sizing: border-box;
+  padding: 12px 12px 12px 0;
+}
+.guest-login-dialog__close {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; padding: 8px;
+  border: 0; border-radius: 24px; background: transparent;
+  cursor: pointer;
+}
+.guest-login-dialog__close img { display: block; width: 10px; height: 10px; }
+.guest-login-dialog__body {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  flex: 0 0 204px; box-sizing: border-box;
+  padding: 0 24px 16px; text-align: center;
+}
+.guest-login-dialog__hero {
+  position: relative; flex: 0 0 100px;
+  width: 100px; height: 100px;
+}
+.guest-login-dialog__hero-layer {
+  position: absolute; display: block; max-width: none;
+}
+.guest-login-dialog__hero-layer--r2525 { top: 75px; left: 11px; width: 39px; height: 14px; }
+.guest-login-dialog__hero-layer--r2526 { top: 75px; left: 50px; width: 38px; height: 14px; }
+.guest-login-dialog__hero-layer--r2528 { top: 15px; left: 39px; width: 22px; height: 10px; }
+.guest-login-dialog__hero-layer--subtract { top: 19px; left: 11px; width: 77px; height: 56px; }
+.guest-login-dialog__hero-layer--vector { top: 35px; left: 28px; width: 43px; height: 40px; }
+.guest-login-dialog__title {
+  flex: 0 0 auto; margin: 0;
+  font-size: 22px; line-height: normal; font-weight: 700;
+}
+.guest-login-dialog__sub {
+  flex: 0 0 auto; max-width: 436px; margin: 0;
+  color: rgba(13, 13, 13, 0.46);
+  font-size: 16px; line-height: normal; font-weight: 400;
+}
+.guest-login-dialog__actions {
+  display: flex; align-items: flex-start; justify-content: center; gap: 16px;
+  flex: 0 0 104px; box-sizing: border-box;
+  padding: 15px 24px 33px;
+}
+.guest-login-dialog__btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  height: 56px; padding: 0 24px; border-radius: 10px;
+  font: inherit; font-size: 16px; line-height: 24px; font-weight: 600;
+  cursor: pointer;
+}
+.guest-login-dialog__btn img { display: block; width: 24px; height: 24px; }
+.guest-login-dialog__btn--primary {
+  border: 0; background: #0d0d0d; color: #fff;
+}
+.guest-login-dialog__btn--secondary {
+  border: 1px solid #0d0d0d; background: #fff; color: #0d0d0d;
+}
+.guest-login-dialog__badge {
+  position: relative; display: block;
+  flex: 0 0 24px; width: 24px; height: 24px;
+}
+.guest-login-dialog__badge-union,
+.guest-login-dialog__badge-star {
+  position: absolute; max-width: none;
+}
+.guest-login-dialog__badge-union {
+  top: 2.8px; left: 0.6px; width: 22.86px; height: 19.05px;
+}
+.guest-login-dialog__badge-star {
+  top: 4.8px; left: 6.9px; width: 10.27px; height: 11.2px;
+}
+@media (max-width: 520px) {
+  .guest-login-dialog { height: auto; }
+  .guest-login-dialog__actions { align-items: stretch; flex-direction: column; height: auto; }
+  .guest-login-dialog__btn { width: 100%; }
+}
+
 /* Pro+ upgrade modal — 图3 classic layout */
 .proplus-modal-backdrop,
 .member-limit-modal-backdrop {
@@ -1073,37 +1164,6 @@ button { border: 0; font: inherit; cursor: pointer; }
 .btn-download-all:hover { filter: brightness(1.1); }
 
 .tool-footer { padding: 32px var(--page-x); border-top: 1px solid var(--line); color: var(--soft-muted); font-size: 13px; text-align: center; }
-
-/* Demo panel */
-.demo-panel {
-  position: fixed; right: 16px; bottom: 16px; z-index: 100;
-  width: min(320px, calc(100vw - 32px)); padding: 14px;
-  border: 1px solid var(--line); border-radius: 16px; background: #fff;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.12); font-size: 12px;
-  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-}
-.demo-panel.is-hidden {
-  opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(12px);
-}
-.demo-panel-hide { width: 100%; margin-top: 8px; font-size: 11px; }
-.demo-panel-toggle {
-  position: fixed; right: 16px; bottom: 16px; z-index: 99;
-  display: grid; place-items: center; width: 44px; height: 44px;
-  border: 1px solid var(--line); border-radius: 50%; background: #fff;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12); color: var(--accent);
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-.demo-panel-toggle:hover { transform: scale(1.05); box-shadow: 0 12px 28px rgba(89,72,243,0.2); }
-.demo-panel-toggle .material-symbols-rounded { font-size: 22px; }
-.demo-panel h4 { margin: 0 0 10px; font-size: 13px; }
-.demo-panel label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer; }
-.demo-panel select { width: 100%; margin-top: 4px; padding: 6px; border-radius: 8px; border: 1px solid var(--line); }
-.demo-scenario-btns { display: grid; gap: 4px; margin: 8px 0; max-height: 220px; overflow-y: auto; }
-.demo-scenario-btns button {
-  padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line);
-  background: var(--soft); font-size: 11px; text-align: left;
-}
-.demo-scenario-btns button.is-active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 
 /* Specialized workflows: Split / Merge / Sign */
 #special-workflow[hidden] { display: none !important; }

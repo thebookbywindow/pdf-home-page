@@ -17,7 +17,7 @@ function loadBrowserIife(relativePath, exportName, globals = {}) {
   return sandbox.window[exportName] || sandbox[exportName];
 }
 
-const catalog = loadBrowserIife("scripts/tool-catalog.js", "WPSToolCatalog");
+const catalog = loadBrowserIife("src/runtime/tool-catalog.js", "WPSToolCatalog");
 const threeDTools = catalog
   .allOnlineTools()
   .filter((tool) => tool.type === "3d-conversion");
@@ -33,15 +33,58 @@ for (const tool of threeDTools) {
 }
 
 const quota = loadBrowserIife(
-  "scripts/tool-quota-flow.js",
+  "src/runtime/tool-quota-flow.js",
   "WPSQuotaFlow",
   { WPSToolCatalog: catalog }
 );
 assert.equal(
-  quota.getQuotaSummary({ isPremium: false, usesRemaining: 10 }, { compact: true }).text,
-  "Daily <strong>10</strong> of 10",
-  "The compact 3D quota badge must retain the real ten-use rule."
+  quota.getState().usesRemaining,
+  0,
+  "The default logged-out state must start with zero free uses."
 );
+assert.equal(
+  quota.getQuotaSummary({ loggedIn: false, isPremium: false, usesRemaining: 2 }, { compact: true }).text,
+  "Sign in to get more free uses",
+  "The guest quota badge must guide users to sign in."
+);
+assert.equal(
+  quota.getQuotaSummary({ loggedIn: true, isPremium: false, usesRemaining: 1 }, { compact: true }).text,
+  "Online: <strong>1</strong> of 1",
+  "The signed-in free quota badge must match the official 1-use allowance."
+);
+assert.equal(
+  quota.getQuotaSummary({ isPremium: true, usesRemaining: 10 }, { compact: true }).text,
+  "Unlimited",
+  "Official compact Pro badge must say Unlimited, not Unlimited uses."
+);
+assert.equal(
+  quota.getQuotaRules("mesh-converter").table.find((row) => row.label === "Daily uses").guest,
+  "0/day",
+  "Guest accounts must have no free daily uses."
+);
+const storage = new Map();
+const quotaWithStorage = loadBrowserIife(
+  "src/runtime/tool-quota-flow.js",
+  "WPSQuotaFlow",
+  {
+    WPSToolCatalog: catalog,
+    localStorage: {
+      getItem: (key) => storage.get(key) || null,
+      setItem: (key, value) => storage.set(key, value),
+      removeItem: (key) => storage.delete(key)
+    }
+  }
+);
+quotaWithStorage.setScenario("logged_in");
+assert.equal(quotaWithStorage.consumeUse().source, "web", "The first signed-in use must come from the web quota.");
+for (let i = 0; i < 5; i += 1) {
+  assert.equal(
+    quotaWithStorage.consumeUse().source,
+    "wps-office",
+    "Follow-up conversions must use the WPS Office cloud-document quota."
+  );
+}
+assert.equal(quotaWithStorage.consumeUse().ok, false, "The WPS Office five-use allowance must still have a boundary.");
 for (const slug of expectedSlugs) {
   const filesRule = quota
     .getQuotaRules(slug)
@@ -54,7 +97,7 @@ for (const slug of expectedSlugs) {
 }
 
 const content = loadBrowserIife(
-  "scripts/tool-content-library.js",
+  "src/runtime/tool-content-library.js",
   "WPSToolContentLibrary"
 );
 const mesh = content.get("mesh-converter");
@@ -168,19 +211,17 @@ for (const slug of expectedSlugs) {
 }
 
 for (const slug of expectedSlugs) {
-  const html = fs.readFileSync(path.join(root, "tools", `${slug}.html`), "utf8");
-  const input = html.match(/<input type="file" id="file-input"[^>]*>/)?.[0] || "";
-  assert.ok(input, `${slug} must render a file input.`);
-  assert.doesNotMatch(input, /\bmultiple\b/i, `${slug} file picker must be single-file.`);
+  const html = fs.readFileSync(path.join(root, "en", "pdf-tools", slug, "index.html"), "utf8");
+  assert.match(html, /data-tool-slug=/, `${slug} must render a Vue MPA page.`);
   assert.match(
-    html,
-    /id="drop-title">Drop [^<]+ file here<\/h3>/i,
+    fs.readFileSync(path.join(root, "src", "components", "tool", "ToolPage.vue"), "utf8"),
+    /:multiple="!singleFile"[\s\S]*const singleFile =/,
     `${slug} drop-zone copy must use singular file wording.`
   );
 }
 
 const contentBlocksSource = fs.readFileSync(
-  path.join(root, "scripts", "tool-content-blocks.js"),
+  path.join(root, "src", "runtime", "tool-content-blocks.js"),
   "utf8"
 );
 const contentSectionsCss = fs.readFileSync(

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56 (81588) - https://sketch.com -->
+    <title>Icon/Function/Download</title>
+    <desc>Created with Sketch.</desc>
+    <g id="V2.06" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Compress-上传异常文件-多个文件" transform="translate(-291.000000, -315.000000)" fill="#796FA9">
+            <g id="编组备份-5" transform="translate(16.000000, 295.000000)">
+                <g id="编组-8" transform="translate(275.000000, 20.000000)">
+                    <g id="Icon/WebPDF/Function/Tick备份-2" transform="translate(2.000000, 2.000000)">
+                        <path d="M4,0.666666667 L12,0.666666667 L12,4 L4,4 L4,0.666666667 Z M5.33333333,2 L5.33333333,2.66666667 L10.6666667,2.66666667 L10.6666667,2 L5.33333333,2 Z" id="矩形" fill-rule="nonzero"></path>
+                        <path d="M4.66666667,2.66666667 L11.3333333,2.66666667 C12.8060927,2.66666667 14,3.860574 14,5.33333333 L14,15.3333333 L2,15.3333333 L2,5.33333333 C2,3.860574 3.19390733,2.66666667 4.66666667,2.66666667 Z M12.6666667,14 L12.6666667,5.33333333 C12.6666667,4.59695367 12.069713,4 11.3333333,4 L4.66666667,4 C3.930287,4 3.33333333,4.59695367 3.33333333,5.33333333 L3.33333333,14 L12.6666667,14 Z" id="矩形" fill-rule="nonzero" transform="translate(8.000000, 9.000000) scale(1, -1) translate(-8.000000, -9.000000) "></path>
+                        <rect id="矩形" fill-rule="evenodd" x="0.666666667" y="2.66666667" width="14.6666667" height="1.33333333"></rect>
+                        <rect id="矩形" fill-rule="evenodd" x="4.66666667" y="6.66666667" width="1.33333333" height="4"></rect>
+                        <rect id="矩形备份" fill-rule="evenodd" x="7.33333333" y="6.66666667" width="1.33333333" height="4"></rect>
+                        <rect id="矩形备份-2" fill-rule="evenodd" x="10" y="6.66666667" width="1.33333333" height="4"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

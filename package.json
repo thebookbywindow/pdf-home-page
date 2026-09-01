@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/dev-server.mjs",
-    "dev:vite": "vite",
-    "start": "node scripts/dev-server.mjs",
-    "generate": "node scripts/generate-tool-pages.mjs",
-    "test": "node scripts/test-3d-single-file.mjs && node scripts/test-3d-page-parity.mjs",
-    "build": "node scripts/generate-tool-pages.mjs"
+    "dev": "pnpm generate && vite",
+    "dev:vite": "pnpm dev",
+    "start": "pnpm generate && vite preview",
+    "generate": "node scripts/generate-vue-pages.mjs",
+    "test": "node scripts/test-vue-only.mjs && node scripts/test-quota-modal.mjs && node scripts/test-3d-single-file.mjs && node scripts/test-3d-page-parity.mjs",
+    "build": "pnpm generate && vite build"
   },
   "dependencies": {
     "pinia": "^3.0.4",

@@ -1,0 +1,44 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const source = fs.readFileSync(path.join(root, "src", "runtime", "tool-quota-modals.js"), "utf8");
+const toolPageSource = fs.readFileSync(path.join(root, "src", "runtime", "tool-page.js"), "utf8");
+const workflowSource = fs.readFileSync(path.join(root, "src", "runtime", "tool-workflows-extra.js"), "utf8");
+const linksSource = fs.readFileSync(path.join(root, "src", "runtime", "wps-links.js"), "utf8");
+const start = source.indexOf("function ensureQuotaExhaustedModal()");
+const end = source.indexOf("/** 图3", start);
+assert.ok(start >= 0 && end > start, "quota exhausted modal factory must exist");
+
+const modalSource = source.slice(start, end);
+assert.match(modalSource, /className\s*=\s*"continer-wrap is-guest-login"/);
+assert.match(modalSource, /class="guest-login-dialog"/);
+assert.match(modalSource, />Unlock more</);
+assert.match(modalSource, /Sign in/);
+assert.match(source, /colSignedIn: "Signed-in"/);
+assert.match(source, /colClient: "WPS Office"/);
+assert.match(source, /Daily uses", signedIn: "1\/day", client: "5\/day"/);
+assert.doesNotMatch(source, /colGuest: "Guest"/);
+assert.match(modalSource, /data-quota-sign-in/);
+assert.match(modalSource, /BUY_CTA/);
+assert.match(modalSource, /intro-r2525\.svg/);
+assert.match(modalSource, /upgrade-union\.svg/);
+assert.doesNotMatch(modalSource, /Free Download/);
+
+const loginStart = source.indexOf("function ensureLoginRequiredModal()");
+const loginEnd = source.indexOf("/** 图3", loginStart);
+assert.ok(loginStart >= 0 && loginEnd > loginStart, "unauthenticated PDF login modal factory must exist");
+const loginModalSource = source.slice(loginStart, loginEnd);
+assert.match(loginModalSource, /id\s*=\s*"login-required-modal"/);
+assert.match(loginModalSource, />Sign in to continue</);
+assert.match(loginModalSource, /Please sign in before uploading a PDF file/);
+assert.match(loginModalSource, /data-login-required-sign-in/);
+assert.match(source, /interceptUnauthenticatedPdf/);
+assert.match(toolPageSource, /btnSelectFile\?\.addEventListener\("click", \(\) => \{[\s\S]*?els\.fileInput\.click\(\)/);
+assert.match(workflowSource, /function acceptFiles\(files\)[\s\S]*?interceptUnauthenticatedPdf/);
+assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
+assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
+
+console.log("PASS quota and login modal contracts are up to date.");
