@@ -137,7 +137,7 @@
                 Download all as ZIP
               </button>
               <button class="btn-secondary btn-batch-client" type="button" id="btn-batch-client" hidden>Download WPS Office</button>
-              <p class="result-client-hint" id="batch-client-hint" hidden>Download WPS Office, then open Cloud Documents to view/edit.</p>
+              <p class="result-client-hint" id="batch-client-hint" hidden>Download WPS Office, then open Cloud Documents to view and edit.</p>
             </div>
           </div>
 
@@ -153,7 +153,7 @@
               </a>
               <div class="result-client-cta">
                 <button class="btn-secondary" type="button" id="btn-download-client">Download WPS Office</button>
-                <p class="result-client-hint">Download WPS Office, then open Cloud Documents to view/edit.</p>
+                <p class="result-client-hint">Download WPS Office, then open Cloud Documents to view and edit.</p>
               </div>
             </div>
           </div>

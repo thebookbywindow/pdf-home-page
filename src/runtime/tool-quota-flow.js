@@ -263,7 +263,7 @@
       const dailyLimit = dailyLimitFor(state);
       return {
         text: options.compact
-          ? `Online: <strong>${left}</strong> of ${dailyLimit}`
+          ? `Online: <strong>${left}</strong> uses left`
           : `<strong>${left}</strong> of ${dailyLimit} free uses left today`,
         sub: null
       };

@@ -269,7 +269,7 @@
       if (clientQuotaText) {
         clientQuotaText.hidden = !showClientQuota;
         if (showClientQuota) {
-          clientQuotaText.textContent = `WPS Office: ${state.clientUsesRemaining} left`;
+          clientQuotaText.textContent = `WPS Office: ${state.clientUsesRemaining} uses left`;
         }
       }
       renderQuotaTooltip();
@@ -279,8 +279,8 @@
       const cloudHint = document.getElementById("batch-client-hint");
       if (cloudHint) {
         cloudHint.textContent = lastProcessingSource === "wps-office"
-          ? "Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view/edit."
-          : "Download WPS Office, then open Cloud Documents to view/edit.";
+          ? "Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view and edit."
+          : "Download WPS Office, then open Cloud Documents to view and edit.";
       }
 
       const busy = workflowView !== "upload";

@@ -25,7 +25,7 @@
             </div>
             <div class="compress-single__diff" id="compress-single-done-stats"></div>
             <p class="result-client-hint compress-single__cloud-hint" id="compress-single-cloud-hint" hidden>
-              Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view/edit.
+              Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view and edit.
             </p>
             <div class="compress-single__btns">
               <button class="compress-single__btn compress-single__btn--primary" type="button" id="compress-single-download">

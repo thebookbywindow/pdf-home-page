@@ -49,7 +49,7 @@ assert.equal(
 );
 assert.equal(
   quota.getQuotaSummary({ loggedIn: true, isPremium: false, usesRemaining: 1 }, { compact: true }).text,
-  "Online: <strong>1</strong> of 1",
+  "Online: <strong>1</strong> uses left",
   "The signed-in free quota badge must match the official 1-use allowance."
 );
 assert.equal(

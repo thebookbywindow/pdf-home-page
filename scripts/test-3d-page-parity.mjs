@@ -188,7 +188,7 @@ assert.match(quotaModalsSource, /downloadHint: "Saved to WPS Cloud\. Download, t
 
 const toolPageSource = read("src/runtime/tool-page.js");
 assert.match(toolPageSource, /directDownload\.hidden = lastProcessingSource === "wps-office"/, "Cloud-document conversions must keep only the WPS Office download action.");
-assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} left`/, "The upload state must expose remaining WPS Office uses.");
+assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/, "The upload state must expose remaining WPS Office uses.");
 assert.match(toolPageSource, /const showClientQuota = state\.loggedIn && !state\.isPremium/, "Guests must not receive a WPS Office quota hint.");
 assert.match(toolPageSource, /function isCompressShell\(/, "Compress flow must detect the official shell.");
 assert.match(toolPageSource, /function isOfficialShell\(/, "Quota bar in-flow must apply to every official pdf.wps.com shell.");

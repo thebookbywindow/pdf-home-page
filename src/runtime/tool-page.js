@@ -427,7 +427,7 @@
           <button class="btn-secondary btn-batch-client" type="button" id="btn-batch-client" hidden>
             Download WPS Office
           </button>
-          <p class="result-client-hint" id="batch-client-hint" hidden>Download WPS Office, then open Cloud Documents to view/edit.</p>
+          <p class="result-client-hint" id="batch-client-hint" hidden>Download WPS Office, then open Cloud Documents to view and edit.</p>
         </div>`;
       const host = els.workspaceBody || document.getElementById("workspace-body");
       const result = document.getElementById("result-panel");
@@ -814,7 +814,7 @@
       if (clientQuotaText) {
         clientQuotaText.hidden = !showClientQuota;
         if (showClientQuota) {
-          clientQuotaText.textContent = `WPS Office: ${state.clientUsesRemaining} left`;
+          clientQuotaText.textContent = `WPS Office: ${state.clientUsesRemaining} uses left`;
         }
       }
       renderQuotaTooltip(els.quotaTooltip, Q);
@@ -1021,8 +1021,8 @@
       const cloudHint = els.resultPanel.querySelector(".result-client-hint");
       if (cloudHint) {
         cloudHint.textContent = lastProcessingSource === "wps-office"
-          ? "Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view/edit."
-          : "Download WPS Office, then open Cloud Documents to view/edit.";
+          ? "Saved to WPS Cloud Documents. Download WPS Office, then open Cloud Documents to view and edit."
+          : "Download WPS Office, then open Cloud Documents to view and edit.";
       }
       els.resultPanel.dataset.visible = "true";
       setView("result");
