@@ -7,6 +7,7 @@ import vue from "@vitejs/plugin-vue";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = __dirname;
+const base = process.env.GITHUB_ACTIONS ? "/pdf-home-page/" : "/";
 
 function htmlInputs() {
   const inputs = [];
@@ -48,6 +49,7 @@ function copyStaticAssets() {
 
 export default defineConfig({
   root: ".",
+  base,
   appType: "mpa",
   server: {
     port: 3000,
