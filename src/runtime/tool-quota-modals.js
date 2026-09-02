@@ -49,7 +49,7 @@
     upgradeHint: "Unlimited use with WPS Pro+",
     downloadHint: "Saved to WPS Cloud. Download, then open Cloud Documents",
     upgrade: "Upgrade",
-    download: "Download WPS Office"
+    download: "Download"
   };
 
   function quotaTableHTML(data) {
@@ -250,7 +250,7 @@
           </div>
           <h2 class="guest-login-dialog__title" id="login-required-modal-title">Sign in to continue</h2>
           <p class="guest-login-dialog__sub" id="login-required-modal-copy">
-            Sign in to continue uploading your file.
+            Sign in to continue processing your file.
           </p>
         </div>
         <div class="guest-login-dialog__actions">

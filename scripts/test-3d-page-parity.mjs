@@ -230,7 +230,7 @@ assert.match(
 );
 assert.match(
   toolPageSource,
-  /Your Converted PDF is saved to WPS Cloud Documents\. Download WPS Office to view and edit it there\./,
+  /Your converted file is saved to WPS Drive\. Download and use WPS Office to view and edit it in Cloud Documents\./,
   "WPS Office quota results must direct users to WPS Cloud Documents."
 );
 assert.match(

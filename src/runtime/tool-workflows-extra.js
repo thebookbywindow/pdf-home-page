@@ -106,6 +106,15 @@
       const hide = () => { hideTimer = setTimeout(() => els.quotaTooltip.classList.remove("is-visible"), 120); };
       trigger?.addEventListener("mouseenter", show);
       trigger?.addEventListener("focus", show);
+      if (els.quotaBadge) {
+        trigger.addEventListener("click", (event) => {
+          const state = Q.getState?.();
+          if (state?.loggedIn) return;
+          event.preventDefault();
+          els.quotaTooltip.classList.remove("is-visible");
+          Links()?.openSignIn?.();
+        });
+      }
       wrap?.addEventListener("mouseleave", hide);
       trigger?.addEventListener("blur", hide);
       els.quotaTooltip.addEventListener("mouseenter", show);
@@ -298,6 +307,14 @@
       return true;
     }
 
+    function tryStartProcess(files, onLogin) {
+      const list = Array.from(files || []).filter(Boolean);
+      if (!list.length) return false;
+      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list, onLogin)) return false;
+      if (interceptFiles(list)) return false;
+      return tryConsumeUse();
+    }
+
     async function runUploadProgress(file, token, label) {
       setView("uploading");
       updateProgressUI({ percent: 0, eta: 3, phase: "Uploading…" });
@@ -408,6 +425,7 @@
       resetToUpload,
       renderUI,
       tryConsumeUse,
+      tryStartProcess,
       runUploadProgress,
       runCombinedUploadProgress,
       runProcessProgress,
@@ -425,8 +443,6 @@
     function acceptFiles(files) {
       const list = Array.from(files || []).filter(Boolean);
       if (!list.length) return;
-      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list, () => onFiles(list))) return;
-      if (global.WPSQuotaModals?.interceptUpload(list, document.body?.dataset?.toolSlug || ctx.tool?.slug || "")) return;
       onFiles(list);
     }
 
@@ -458,7 +474,7 @@
   /* ───────────── Split ───────────── */
   function initSplit(config) {
     const ctx = initSharedChrome(config);
-    const { H, specialRoot, setView, showResult, resetToUpload, tryConsumeUse, runUploadProgress, runProcessProgress, bumpToken, getToken, renderUI } = ctx;
+    const { H, specialRoot, setView, showResult, resetToUpload, tryStartProcess, runUploadProgress, runProcessProgress, bumpToken, getToken, renderUI } = ctx;
     let sourceFile = null;
     let pageCount = 0;
     let selected = new Set();
@@ -546,6 +562,7 @@
     async function extractPages(asOne) {
       const pages = Array.from(selected).sort((a, b) => a - b);
       if (!pages.length || !sourceFile) return;
+      if (!tryStartProcess([sourceFile], () => extractPages(asOne))) return;
       const token = bumpToken();
       const ok = await runProcessProgress(sourceFile, token, "Splitting...", 1600 + pages.length * 180);
       if (!ok) return;
@@ -584,7 +601,6 @@
     }
 
     async function startWithFile(file) {
-      if (!tryConsumeUse()) return;
       sourceFile = file;
       pageCount = estimatePageCount(file);
       selected = new Set();
@@ -608,7 +624,7 @@
   /* ───────────── Merge ───────────── */
   function initMerge(config) {
     const ctx = initSharedChrome(config);
-    const { H, specialRoot, setView, showResult, tryConsumeUse, runUploadProgress, runCombinedUploadProgress, runProcessProgress, bumpToken, getToken, renderUI, els } = ctx;
+    const { H, specialRoot, setView, tryStartProcess, runUploadProgress, runCombinedUploadProgress, runProcessProgress, bumpToken, getToken, renderUI, els } = ctx;
     let mergeFiles = []; // { id, file }
     let idSeq = 0;
     let merging = false;
@@ -710,7 +726,6 @@
 
     async function addFilesAfterUpload(pdfs) {
       if (!pdfs.length) return;
-      if (!mergeFiles.length && !tryConsumeUse()) return;
 
       const token = bumpToken();
       // Keep existing thumbs visible; one combined bar for multi upload
@@ -724,6 +739,7 @@
 
     async function runMerge() {
       if (mergeFiles.length < 2 || merging) return;
+      if (!tryStartProcess(mergeFiles.map((item) => item.file), runMerge)) return;
       merging = true;
       renderMergeWorkspace();
       const token = bumpToken();
@@ -769,7 +785,7 @@
   /* ───────────── Sign ───────────── */
   function initSign(config) {
     const ctx = initSharedChrome(config);
-    const { H, specialRoot, setView, showResult, tryConsumeUse, runUploadProgress, runProcessProgress, bumpToken, renderUI } = ctx;
+    const { H, specialRoot, setView, tryStartProcess, runUploadProgress, runProcessProgress, bumpToken, renderUI } = ctx;
     let sourceFile = null;
     let signatures = []; // { id, type, dataUrl, label }
     let placements = []; // { id, sigId, x, y }
@@ -1108,6 +1124,7 @@
 
     async function finishSign() {
       if (!placements.length || !sourceFile) return;
+      if (!tryStartProcess([sourceFile], finishSign)) return;
       const token = bumpToken();
       const ok = await runProcessProgress(sourceFile, token, "Signing...", 1800);
       if (!ok) return;
@@ -1123,7 +1140,6 @@
     }
 
     async function startWithFile(file) {
-      if (!tryConsumeUse()) return;
       sourceFile = file;
       signatures = [];
       placements = [];

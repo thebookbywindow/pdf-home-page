@@ -308,6 +308,15 @@
     const hide = () => { hideTimer = setTimeout(() => els.quotaTooltip.classList.remove("is-visible"), 120); };
     trigger?.addEventListener("mouseenter", show);
     trigger?.addEventListener("focus", show);
+    if (els.quotaBadge) {
+      trigger.addEventListener("click", (event) => {
+        const state = Q.getState?.();
+        if (state?.loggedIn) return;
+        event.preventDefault();
+        els.quotaTooltip.classList.remove("is-visible");
+        global.WPSLinks?.openSignIn?.();
+      });
+    }
     wrap?.addEventListener("mouseleave", hide);
     trigger?.addEventListener("blur", hide);
     els.quotaTooltip.addEventListener("mouseenter", show);
@@ -744,13 +753,15 @@
           directDownload.hidden = false;
           directDownload.dataset.clientOnly = clientOnlyResult ? "true" : "false";
           const downloadLabel = directDownload.querySelector("span");
-          if (downloadLabel) downloadLabel.textContent = clientOnlyResult ? "Download WPS Office" : "Download";
+          const labelText = clientOnlyResult ? "Open with WPS Office" : "Download";
+          if (downloadLabel) downloadLabel.textContent = labelText;
+          else directDownload.textContent = labelText;
         }
         if (cloudHint) {
           cloudHint.hidden = !(inSingle && batchPhase === "done");
           if (inSingle && batchPhase === "done") {
             cloudHint.textContent = clientOnlyResult
-              ? "Your Converted PDF is saved to WPS Cloud Documents. Download WPS Office to view and edit it there."
+              ? "Your converted file is saved to WPS Drive. Download and use WPS Office to view and edit it in Cloud Documents."
               : "Click Download to download both the converted file and WPS Office.";
           }
         }
@@ -1143,6 +1154,13 @@
     }
 
     async function startCompressProcess() {
+      const processFiles = batchItems
+        .filter((item) => !item.cancelled)
+        .map((item) => item.file)
+        .filter(Boolean);
+      if (!processFiles.length) return;
+      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(processFiles, () => startCompressProcess())) return;
+      if (interceptFiles(processFiles)) return;
       const consume = Q.consumeUse();
       if (!consume.ok) {
         global.WPSQuotaModals?.openQuotaExhausted();
@@ -1218,14 +1236,15 @@
         );
         return;
       }
-      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list, () => startUpload(list))) return;
-      if (interceptFiles(list)) return;
 
       if (isCompressShell()) {
         if (batchPhase === "processing" || batchPhase === "done" || batchPhase === "uploading" || batchPhase === "ready") return;
         await startCompressUpload(list);
         return;
       }
+
+      if (global.WPSQuotaModals?.interceptUnauthenticatedPdf?.(list, () => startUpload(list))) return;
+      if (interceptFiles(list)) return;
 
       if (list.length > 1) {
         await startBatchUpload(list);
