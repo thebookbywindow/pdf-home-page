@@ -8,7 +8,7 @@
     "dev:vite": "pnpm dev",
     "start": "pnpm generate && vite preview",
     "generate": "node scripts/generate-vue-pages.mjs",
-    "test": "node scripts/test-vue-only.mjs && node scripts/test-quota-modal.mjs && node scripts/test-3d-single-file.mjs && node scripts/test-3d-page-parity.mjs",
+    "test": "node scripts/test-vue-only.mjs && node scripts/test-quota-modal.mjs && node scripts/test-tool-i18n.mjs && node scripts/test-3d-single-file.mjs && node scripts/test-3d-page-parity.mjs",
     "build": "pnpm generate && vite build"
   },
   "dependencies": {

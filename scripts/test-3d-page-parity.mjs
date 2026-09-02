@@ -160,7 +160,7 @@ assert.match(
 );
 assert.doesNotMatch(generatorSource, /demoPanelHtml|demo-panel|demo-scenarios|demo-uses/, "Generated pages must not include R&D panel markup.");
 assert.doesNotMatch(generatorSource, /redirectHtml|legacyDir|homepage\.html|toolsDir/, "The generator must emit canonical Vue pages only.");
-assert.match(generatorSource, /canonicalToolsDir/, "The generator must target the canonical /en/pdf-tools/ tree.");
+assert.match(generatorSource, /localeTools/, "The generator must target every supported locale tool tree.");
 assert.match(
   compressFlowComponent,
   /compress-single__card|compress-single__zone/,

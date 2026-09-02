@@ -4,7 +4,10 @@ import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const canonicalToolsDir = path.join(root, "en", "pdf-tools");
+const localeTools = [
+  { dir: "en", htmlLang: "en-US" },
+  { dir: "zh", htmlLang: "zh-Hant-TW" }
+];
 
 function loadBrowserIife(filePath, exportName) {
   const code = fs.readFileSync(filePath, "utf8");
@@ -52,7 +55,7 @@ ${homepageHead}
 `;
 }
 
-function toolHtml(tool) {
+function toolHtml(tool, locale) {
   const is3d = tool.type === "3d-conversion";
   const officialShell = is3d || Boolean(tool.officialShell);
   const bodyClass = is3d
@@ -62,7 +65,7 @@ function toolHtml(tool) {
       : "tool-page";
   const description = metaDescription(tool);
   return `<!DOCTYPE html>
-<html lang="en-US">
+<html lang="${locale.htmlLang}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -83,12 +86,14 @@ function toolHtml(tool) {
 
 fs.writeFileSync(path.join(root, "index.html"), homepageHtml(), "utf8");
 
-for (const tool of tools) {
-  const canonicalSlug = tool.slug === "signing-pdf" ? "sign-pdf" : tool.slug;
-  const canonicalDir = path.join(canonicalToolsDir, canonicalSlug);
-  fs.mkdirSync(canonicalDir, { recursive: true });
-  fs.writeFileSync(path.join(canonicalDir, "index.html"), toolHtml(tool), "utf8");
-
+for (const locale of localeTools) {
+  const localeRoot = path.join(root, locale.dir, "pdf-tools");
+  for (const tool of tools) {
+    const canonicalSlug = tool.slug === "signing-pdf" ? "sign-pdf" : tool.slug;
+    const canonicalDir = path.join(localeRoot, canonicalSlug);
+    fs.mkdirSync(canonicalDir, { recursive: true });
+    fs.writeFileSync(path.join(canonicalDir, "index.html"), toolHtml(tool, locale), "utf8");
+  }
 }
 
-console.log(`Generated Vue MPA pages: ${tools.length} canonical directories.`);
+console.log(`Generated Vue MPA pages: ${tools.length} tools across ${localeTools.length} locales.`);

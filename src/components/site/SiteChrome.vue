@@ -68,6 +68,7 @@ function setupLanguagePicker(root) {
       event.preventDefault();
       picker.querySelectorAll("a").forEach((item) => item.classList.remove("is-active"));
       link.classList.add("is-active");
+      runtimeWindow().WPSToolI18n?.setLanguage(link.dataset.lang || "en");
       close();
     });
   });
@@ -97,6 +98,7 @@ function setupFooterLanguagePicker(root) {
       picker.querySelectorAll("a").forEach((item) => item.classList.remove("is-active"));
       link.classList.add("is-active");
       if (label) label.textContent = link.textContent.trim();
+      runtimeWindow().WPSToolI18n?.setLanguage(link.dataset.lang || "en");
       close();
     });
   });
@@ -131,10 +133,11 @@ function setupMobileMenu(root) {
 function setup() {
   const root = document.getElementById("site-chrome-header");
   const footer = document.getElementById("site-chrome-footer");
+  const win = runtimeWindow();
   if (isFooterOnly) {
     if (!footer) return;
     setupFooterLanguagePicker(footer);
-    const win = runtimeWindow();
+    win.WPSToolI18n?.init();
     win.WPSLinks?.wireDownloadTriggers(footer);
     win.WPSToolsDirectory?.render(footer.querySelector("[data-tools-directory]"));
     return;
@@ -149,7 +152,7 @@ function setup() {
   updateScroll();
   listen(window, "scroll", updateScroll, { passive: true });
 
-  const win = runtimeWindow();
+  win.WPSToolI18n?.init();
   win.WPSLinks?.wireDownloadTriggers(root);
   win.WPSSiteNav3D?.render3DNavMenu(document);
   win.WPSToolRoutes?.wireHomepage(document);

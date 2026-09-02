@@ -4,6 +4,7 @@ import "./format-hubs-3d.js";
 import "./tool-catalog.js";
 import "./tool-routes.js";
 import "./site-nav-3d.js";
+import "./tool-i18n.js";
 import "./tools-directory.js";
 import "./tool-quota-flow.js";
 import "./tool-quota-modals.js";

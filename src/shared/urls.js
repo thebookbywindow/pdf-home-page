@@ -1,8 +1,13 @@
-const TOOL_PATH_RE = /^(?:tools|en\/pdf-tools)\/([^/?#]+)(?:\.html)?(?:\/)?(?:([?#].*))?$/i;
+const TOOL_PATH_RE = /^(?:tools|(?:en|zh)\/pdf-tools)\/([^/?#]+)(?:\.html)?(?:\/)?(?:([?#].*))?$/i;
 
-export function toolUrl(slug) {
+export function siteLocale(pathname = window.location.pathname) {
+  if (/\/en\/pdf-tools\/[^/]+(?:\/|$)/i.test(pathname)) return "en";
+  return "zh";
+}
+
+export function toolUrl(slug, locale = siteLocale()) {
   const canonicalSlug = slug === "signing-pdf" ? "sign-pdf" : slug;
-  return `/en/pdf-tools/${encodeURIComponent(canonicalSlug)}/`;
+  return `/${locale}/pdf-tools/${encodeURIComponent(canonicalSlug)}/`;
 }
 
 export function normalizeSiteHref(href, base = siteBase()) {
@@ -17,7 +22,7 @@ export function normalizeSiteHref(href, base = siteBase()) {
 }
 
 export function siteBase(pathname = window.location.pathname) {
-  if (/\/en\/pdf-tools\/[^/]+(?:\/|$)/i.test(pathname)) return "../../../";
+  if (/\/(?:en|zh)\/pdf-tools\/[^/]+(?:\/|$)/i.test(pathname)) return "../../../";
   return /\/tools\/[^/]+(?:\/|$)/i.test(pathname) ? "../../" : "";
 }
 

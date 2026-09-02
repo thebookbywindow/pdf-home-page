@@ -373,6 +373,7 @@
     applyHero(tool);
     applySteps(tool);
     setupEtaBanner(tool);
+    global.WPSToolI18n?.init();
 
     const resultTitle = document.querySelector("#result-panel h3");
     if (resultTitle && tool.resultTitle) resultTitle.textContent = tool.resultTitle;

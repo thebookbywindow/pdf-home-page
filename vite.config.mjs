@@ -20,7 +20,9 @@ function htmlInputs() {
     }
   };
   inputs.push(path.join(rootDir, "index.html"));
-  visit(path.join(rootDir, "en", "pdf-tools"));
+  for (const locale of ["en", "zh"]) {
+    visit(path.join(rootDir, locale, "pdf-tools"));
+  }
   return inputs;
 }
 

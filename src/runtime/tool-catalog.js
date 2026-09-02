@@ -8,6 +8,11 @@
     return `en/pdf-tools/${canonicalSlug}/`;
   }
 
+  function localePrefix() {
+    const pathname = (typeof location !== "undefined" && location.pathname) || "";
+    return /\/en\/pdf-tools\/[^/]+(?:\/|$)/i.test(pathname) ? "en" : "zh";
+  }
+
   const PDF_ACCEPT = ".pdf,application/pdf";
 
   const TOOLS = {
@@ -490,7 +495,7 @@
     if (explicit != null && explicit !== "") return explicit.endsWith("/") ? explicit : explicit + "/";
     if (explicit === "") return "";
     const path = (typeof location !== "undefined" && location.pathname) || "";
-    if (/\/en\/pdf-tools\/[^/]+(?:\/|$)/i.test(path)) return "../../../";
+    if (/\/(?:en|zh)\/pdf-tools\/[^/]+(?:\/|$)/i.test(path)) return "../../../";
     return "";
   }
 
@@ -504,7 +509,8 @@
 
     const base = assetBase();
     // Canonical paths are site-root relative: "en/pdf-tools/foo/", "/", "images/...".
-    return base + pagePath;
+    const localizedPath = pagePath.replace(/^en(?=\/pdf-tools\/)/i, localePrefix());
+    return base + localizedPath;
   }
 
   function getBySlug(slug) {
