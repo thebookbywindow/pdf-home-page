@@ -4,7 +4,7 @@
  * WPS Pro+ members: unlimited uses, ≤200 MB, unlimited files.
  */
 (function (global) {
-  const STORAGE_KEY = "wps_pdf_quota_demo_v2";
+  const STORAGE_KEY = "wps_pdf_quota_demo_v3";
   const GUEST_DAILY_LIMIT = 0;
   const SIGNED_IN_DAILY_LIMIT = 1;
   const CLIENT_DAILY_LIMIT = 5;

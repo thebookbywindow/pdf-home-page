@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const source = fs.readFileSync(path.join(root, "src", "runtime", "tool-quota-modals.js"), "utf8");
+const quotaFlowSource = fs.readFileSync(path.join(root, "src", "runtime", "tool-quota-flow.js"), "utf8");
 const toolPageSource = fs.readFileSync(path.join(root, "src", "runtime", "tool-page.js"), "utf8");
 const workflowSource = fs.readFileSync(path.join(root, "src", "runtime", "tool-workflows-extra.js"), "utf8");
 const linksSource = fs.readFileSync(path.join(root, "src", "runtime", "wps-links.js"), "utf8");
@@ -46,5 +47,7 @@ assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
 assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
 assert.match(linksSource, /const clientQuotaText = document\.getElementById\("client-quota-text"\)/);
 assert.match(linksSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/);
+assert.match(quotaFlowSource, /STORAGE_KEY = "wps_pdf_quota_demo_v3"/);
+assert.match(quotaFlowSource, /loggedIn: false/);
 
 console.log("PASS quota and login modal contracts are up to date.");
