@@ -214,7 +214,7 @@ const quotaModalsSource = read("src/runtime/tool-quota-modals.js");
 assert.match(quotaModalsSource, /class="daily-quota-panel"/, "Official quota hover must use the live daily-quota-panel shell.");
 assert.match(quotaModalsSource, /panelTitle: "Daily free quota"/, "Official quota hover title must use the concise quota copy.");
 assert.match(quotaModalsSource, /colSignedIn: "Signed-in"/, "Official quota hover must include the Signed-in column.");
-assert.match(quotaModalsSource, /downloadHint: "Saved to WPS Cloud\. Download, then open Cloud Documents"/, "Official quota hover must explain the WPS Cloud Documents path.");
+assert.match(quotaModalsSource, /downloadHint: "5 uses\/day saved to WPS Cloud\. Download, then open Cloud Documents"/, "Official quota hover must explain the WPS Cloud Documents path.");
 
 const toolPageSource = read("src/runtime/tool-page.js");
 assert.match(toolPageSource, /directDownload\.hidden = false/, "Compress PDF success state must keep the direct download action visible.");
@@ -380,7 +380,7 @@ assert.match(
   /:is\(\.tool-page--3d-parity,\s*\.tool-page--pdf-parity\)\s+\.tool-quota-bar\.is-in-flow \.quota-flow-back \{[^}]*height:\s*36px;[^}]*gap:\s*4px;[^}]*padding:\s*0\s+24px\s+0\s+16px;[^}]*border-radius:\s*18px;[^}]*font-size:\s*16px;[^}]*line-height:\s*24px/s,
   "The in-flow PDF Back control must match the official 36px task-toolbar pill."
 );
-assert.match(parityCss, /\.daily-quota-panel \{[^}]*width:\s*516px/s, "Official quota hover width must match the live 516px panel.");
+assert.match(parityCss, /\.daily-quota-panel \{[^}]*width:\s*580px/s, "Official quota hover width must accommodate full action copy on one line.");
 assert.match(parityCss, /\.daily-quota-panel \{[^}]*border-radius:\s*24px/s, "Official quota hover radius must match the live 24px card.");
 assert.match(
   parityCss,

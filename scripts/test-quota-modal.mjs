@@ -56,7 +56,16 @@ assert.match(
   /interceptUnauthenticatedPdf\?\.\(processFiles, \(\) => startCompressProcess\(\)\)/,
   "Compression must gate unauthenticated users when processing starts."
 );
-assert.match(toolPageSource, /if \(els\.quotaBadge\)[\s\S]*?state\?\.loggedIn[\s\S]*?global\.WPSLinks\?\.openSignIn/, "Signed-out quota badge clicks must open sign-in.");
+assert.match(
+  toolPageSource,
+  /closest\("\.quota-sign-in-link[\s\S]*?openSignIn/,
+  "Clicking the highlighted Sign in action must trigger sign-in."
+);
+assert.match(
+  workflowSource,
+  /closest\("\.quota-sign-in-link[\s\S]*?openSignIn/,
+  "Specialized workflows must also allow clicking the highlighted Sign in action."
+);
 assert.match(toolPageSource, /clientOnlyResult \? "Open with WPS Office" : "Download"/, "Client-only results must use the WPS Office action label.");
 assert.match(toolPageSource, /else directDownload\.textContent = labelText/, "Client-only action label must also work without a nested label span.");
 assert.match(toolPageSource, /Your converted file is saved to WPS Drive\. Download and use WPS Office to view and edit it in Cloud Documents\./, "Client-only results must explain the Cloud Documents destination.");
@@ -67,7 +76,6 @@ assert.match(workflowSource, /tryStartProcess\(\[sourceFile\], \(\) => extractPa
 assert.match(workflowSource, /tryStartProcess\(mergeFiles\.map\(\(item\) => item\.file\), runMerge\)/);
 assert.match(workflowSource, /tryStartProcess\(\[sourceFile\], finishSign\)/);
 assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
-assert.match(workflowSource, /if \(els\.quotaBadge\)[\s\S]*?state\?\.loggedIn[\s\S]*?Links\(\)\?\.openSignIn/, "Specialized workflows must share signed-out quota badge behavior.");
 assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
 assert.match(linksSource, /const clientQuotaText = document\.getElementById\("client-quota-text"\)/);
 assert.match(linksSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/);

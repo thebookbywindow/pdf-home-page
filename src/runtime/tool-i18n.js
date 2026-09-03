@@ -107,6 +107,8 @@
     "WPS PDF compressor helps to reduce the PDF file size online without losing quality. Users can compress PDF files FREE in batch and customize compression settings to quickly and safely.": "WPS PDF 壓縮工具可在線上縮小 PDF 檔案大小，同時維持檔案品質。使用者可以免費批次壓縮 PDF，並自訂壓縮設定，快速又安全地完成處理。",
     "View quota options": "查看額度選項",
     "Sign in to get more free uses": "登入以獲得更多免費使用次數",
+    "Sign in": "登入",
+    "to get more free uses": "以獲得更多免費使用次數",
     "Get more uses": "獲得更多使用次數",
     "Drop PDF files here": "將 PDF 檔案拖放到這裡",
     "or click to select from your device": "或點擊從裝置選取",
@@ -176,6 +178,8 @@
     "Files per task": "每次工作檔案數",
     "Unlimited": "不限次數",
     "Unlimited use with WPS Pro+": "WPS Pro+ 無限使用",
+    "5 uses/day saved to WPS Cloud. Download, then open Cloud Documents": "每日 5 次使用已儲存至 WPS Cloud。下載後開啟雲端文件",
+    "5 conversions/day saved to WPS Cloud. Download, then open Cloud Documents": "每日 5 次轉換已儲存至 WPS Cloud。下載後開啟雲端文件",
     "Saved to WPS Cloud. Download, then open Cloud Documents": "已儲存至 WPS Cloud。下載後開啟雲端文件",
     "Upgrade": "升級",
     "Cancel Current Task?": "取消目前工作？",
@@ -221,6 +225,7 @@
   function translate(source) {
     if (activeLanguage !== "zh-tw") return source;
     if (ZH_TW[source]) return ZH_TW[source];
+    if (source.trim() === "to get more free uses") return "以獲得更多免費使用次數";
     let match = source.match(/^Online:\s*(\d+)\s+uses left$/);
     if (match) return `線上：${match[1]} 次剩餘`;
     match = source.match(/^WPS Office:\s*(\d+)\s+uses left$/);

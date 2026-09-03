@@ -31,6 +31,7 @@
       userAvatar: qs("user-avatar"),
       quotaText: qs("quota-text"),
       quotaBadge: qs("quota-badge"),
+      quotaTrigger: qs("quota-trigger"),
       quotaInfo: qs("quota-info"),
       quotaTooltip: qs("quota-tooltip"),
       workspaceBody: qs("workspace-body"),

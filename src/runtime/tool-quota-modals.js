@@ -47,7 +47,7 @@
       { label: "Files per task", signedIn: "1", client: "1", pro: "Unlimited" }
     ],
     upgradeHint: "Unlimited use with WPS Pro+",
-    downloadHint: "Saved to WPS Cloud. Download, then open Cloud Documents",
+    downloadHint: "5 uses/day saved to WPS Cloud. Download, then open Cloud Documents",
     upgrade: "Upgrade",
     download: "Download"
   };

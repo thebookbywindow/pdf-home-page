@@ -99,7 +99,7 @@
     function bindQuotaTooltip() {
       if (!els.quotaTooltip) return;
       renderQuotaTooltip();
-      const trigger = els.quotaBadge || els.quotaInfo;
+      const trigger = els.quotaTrigger || els.quotaInfo || els.quotaBadge;
       const wrap = trigger?.closest(".quota-wrap");
       let hideTimer;
       const show = () => { clearTimeout(hideTimer); els.quotaTooltip.classList.add("is-visible"); };
@@ -107,11 +107,14 @@
       trigger?.addEventListener("mouseenter", show);
       trigger?.addEventListener("focus", show);
       if (els.quotaBadge) {
-        trigger.addEventListener("click", (event) => {
-          const state = Q.getState?.();
-          if (state?.loggedIn) return;
+        els.quotaBadge.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!target || typeof target.closest !== "function") return;
+          const signInBtn = target.closest(".quota-sign-in-link, [data-quota-sign-in='true']");
+          if (!signInBtn) return;
           event.preventDefault();
-          els.quotaTooltip.classList.remove("is-visible");
+          event.stopPropagation();
+          els.quotaTooltip?.classList.remove("is-visible");
           Links()?.openSignIn?.();
         });
       }

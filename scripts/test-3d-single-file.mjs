@@ -42,9 +42,9 @@ assert.equal(
   0,
   "The default logged-out state must start with zero free uses."
 );
-assert.equal(
+assert.match(
   quota.getQuotaSummary({ loggedIn: false, isPremium: false, usesRemaining: 2 }, { compact: true }).text,
-  "Sign in to get more free uses",
+  /Sign in.*to get more free uses/,
   "The guest quota badge must guide users to sign in."
 );
 assert.equal(

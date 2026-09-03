@@ -255,7 +255,7 @@
       }
       if (!state.loggedIn && options.compact) {
         return {
-          text: "Sign in to get more free uses",
+          text: '<button type="button" class="quota-sign-in-link" data-quota-sign-in="true">Sign in</button> to get more free uses',
           sub: null
         };
       }
