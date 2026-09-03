@@ -178,7 +178,7 @@
     "Files per task": "每次工作檔案數",
     "Unlimited": "不限次數",
     "Unlimited use with WPS Pro+": "WPS Pro+ 無限使用",
-    "5 uses/day saved to WPS Cloud. Download, then open Cloud Documents": "每日 5 次使用已儲存至 WPS Cloud。下載後開啟雲端文件",
+    "Download WPS Office to view and edit the converted file in WPS Drive.": "下载 WPS Office，在 WPS Drive 中查看和编辑转换后的文件",
     "5 conversions/day saved to WPS Cloud. Download, then open Cloud Documents": "每日 5 次轉換已儲存至 WPS Cloud。下載後開啟雲端文件",
     "Saved to WPS Cloud. Download, then open Cloud Documents": "已儲存至 WPS Cloud。下載後開啟雲端文件",
     "Upgrade": "升級",
@@ -228,8 +228,8 @@
     if (source.trim() === "to get more free uses") return "以獲得更多免費使用次數";
     let match = source.match(/^Online:\s*(\d+)\s+uses left$/);
     if (match) return `線上：${match[1]} 次剩餘`;
-    match = source.match(/^WPS Office:\s*(\d+)\s+uses left$/);
-    if (match) return `WPS Office：${match[1]} 次剩餘`;
+    match = source.match(/^WPS Drive:\s*(\d+)\s+uses left$/);
+    if (match) return `WPS Drive：${match[1]} 次剩餘`;
     match = source.match(/^Original:\s*(.+)$/);
     if (match) return `原始大小：${match[1]}`;
     match = source.match(/^Compressed:\s*(.+)$/);

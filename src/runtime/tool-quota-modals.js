@@ -39,7 +39,7 @@
     panelTitle: "Daily free quota",
     panelSub: "Resets daily · shared across all tools",
     colSignedIn: "Signed-in",
-    colClient: "WPS Office",
+    colClient: "WPS Drive",
     colPro: "WPS Pro+",
     rows: [
       { label: "Daily uses", signedIn: "1/day", client: "5/day", pro: "Unlimited" },
@@ -47,7 +47,7 @@
       { label: "Files per task", signedIn: "1", client: "1", pro: "Unlimited" }
     ],
     upgradeHint: "Unlimited use with WPS Pro+",
-    downloadHint: "5 uses/day saved to WPS Cloud. Download, then open Cloud Documents",
+    downloadHint: "Download WPS Office to view and edit the converted file in WPS Drive.",
     upgrade: "Upgrade",
     download: "Download"
   };

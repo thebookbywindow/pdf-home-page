@@ -214,7 +214,7 @@ const quotaModalsSource = read("src/runtime/tool-quota-modals.js");
 assert.match(quotaModalsSource, /class="daily-quota-panel"/, "Official quota hover must use the live daily-quota-panel shell.");
 assert.match(quotaModalsSource, /panelTitle: "Daily free quota"/, "Official quota hover title must use the concise quota copy.");
 assert.match(quotaModalsSource, /colSignedIn: "Signed-in"/, "Official quota hover must include the Signed-in column.");
-assert.match(quotaModalsSource, /downloadHint: "5 uses\/day saved to WPS Cloud\. Download, then open Cloud Documents"/, "Official quota hover must explain the WPS Cloud Documents path.");
+assert.match(quotaModalsSource, /downloadHint: "Download WPS Office to view and edit the converted file in WPS Drive\."/s, "Official quota hover must explain the WPS Drive path.");
 
 const toolPageSource = read("src/runtime/tool-page.js");
 assert.match(toolPageSource, /directDownload\.hidden = false/, "Compress PDF success state must keep the direct download action visible.");
@@ -238,7 +238,7 @@ assert.match(
   /href && button\.dataset\.clientOnly !== "true"/,
   "WPS Office quota results must not download the local converted file."
 );
-assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/, "The upload state must expose remaining WPS Office uses.");
+assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Drive: \$\{state\.clientUsesRemaining\} uses left`/, "The upload state must expose remaining WPS Drive uses.");
 assert.match(toolPageSource, /const showClientQuota = state\.loggedIn && !state\.isPremium/, "Guests must not receive a WPS Office quota hint.");
 assert.match(toolPageSource, /function isCompressShell\(/, "Compress flow must detect the official shell.");
 assert.match(toolPageSource, /function isOfficialShell\(/, "Quota bar in-flow must apply to every official pdf.wps.com shell.");

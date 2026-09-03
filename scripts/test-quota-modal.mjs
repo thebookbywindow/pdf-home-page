@@ -19,7 +19,7 @@ assert.match(modalSource, /class="guest-login-dialog"/);
 assert.match(modalSource, />Unlock more</);
 assert.match(modalSource, /Sign in/);
 assert.match(source, /colSignedIn: "Signed-in"/);
-assert.match(source, /colClient: "WPS Office"/);
+assert.match(source, /colClient: "WPS Drive"/);
 assert.match(source, /Daily uses", signedIn: "1\/day", client: "5\/day"/);
 assert.match(source, /download: "Download"/, "Quota modal download action must use the concise Download label.");
 assert.doesNotMatch(source, /colGuest: "Guest"/);
@@ -78,7 +78,7 @@ assert.match(workflowSource, /tryStartProcess\(\[sourceFile\], finishSign\)/);
 assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
 assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
 assert.match(linksSource, /const clientQuotaText = document\.getElementById\("client-quota-text"\)/);
-assert.match(linksSource, /clientQuotaText\.textContent = `WPS Office: \$\{state\.clientUsesRemaining\} uses left`/);
+assert.match(linksSource, /clientQuotaText\.textContent = `WPS Drive: \$\{state\.clientUsesRemaining\} uses left`/);
 assert.match(quotaFlowSource, /STORAGE_KEY = "wps_pdf_quota_demo_v3"/);
 assert.match(quotaFlowSource, /loggedIn: false/);
 

@@ -56,7 +56,7 @@
       if (clientQuotaText) {
         clientQuotaText.hidden = !showClientQuota;
         if (showClientQuota) {
-          clientQuotaText.textContent = `WPS Office: ${state.clientUsesRemaining} uses left`;
+          clientQuotaText.textContent = `WPS Drive: ${state.clientUsesRemaining} uses left`;
         }
       }
     }
