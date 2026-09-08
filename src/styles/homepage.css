@@ -266,6 +266,112 @@
         object-fit: contain;
       }
 
+      .nav-wps-ai {
+        position: relative;
+        gap: 5px;
+        min-height: 30px;
+        padding: 0 11px;
+        border: 1px solid rgba(108, 91, 255, 0.22);
+        border-radius: 9px;
+        background: linear-gradient(135deg, #e9edff 0%, #d9d4ff 53%, #c8bfff 100%);
+        color: #4b3fc7;
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        box-shadow: 0 4px 10px rgba(91, 72, 243, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.74);
+        transform-origin: center;
+        animation: nav-wps-ai-breathe 1.9s ease-in-out infinite;
+      }
+
+      .nav-wps-ai__spark {
+        color: #715cff;
+        font-size: 13px;
+        line-height: 1;
+        text-shadow: 0 0 7px rgba(113, 92, 255, 0.35);
+      }
+
+      .nav-wps-ai:hover,
+      .nav-wps-ai:focus-visible {
+        background: linear-gradient(135deg, #e7eaff 0%, #d2caff 52%, #beb2ff 100%);
+        color: #372c9c;
+        outline: none;
+        animation-play-state: paused;
+      }
+
+      .nav-wps-ai {
+        width: 110px;
+        min-height: 42px;
+        height: 42px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .nav-wps-ai__image {
+        display: block;
+        width: 110px;
+        height: auto;
+        max-height: 42px;
+        object-fit: contain;
+      }
+
+      .nav-wps-ai {
+        gap: 6px;
+        min-height: 32px;
+        height: 32px;
+        width: auto;
+        padding: 0 10px;
+        border: 1px solid rgba(57, 30, 240, 0.12);
+        border-radius: 9px;
+        background: rgba(57, 30, 240, 0.045);
+        color: #391ef0;
+        font-size: 13px;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        box-shadow: none;
+      }
+
+      .nav-wps-ai__image {
+        display: none;
+      }
+
+      .nav-wps-ai__mark {
+        display: block;
+        width: 18px;
+        height: 18px;
+        flex: 0 0 18px;
+      }
+
+      .nav-wps-ai__label {
+        line-height: 1;
+      }
+
+      .nav-wps-ai:hover,
+      .nav-wps-ai:focus-visible {
+        background: transparent;
+        color: inherit;
+      }
+
+      @keyframes nav-wps-ai-breathe {
+        0%, 100% {
+          transform: scale(1);
+          box-shadow: 0 4px 10px rgba(91, 72, 243, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.74);
+        }
+        50% {
+          transform: scale(1.075);
+          box-shadow: 0 7px 16px rgba(91, 72, 243, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .nav-wps-ai {
+          animation: none;
+        }
+      }
+
       .nav-link:hover,
       .nav-link:focus-visible,
       .nav-item:hover > .nav-link,

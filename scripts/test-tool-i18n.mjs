@@ -10,6 +10,10 @@ const i18n = read("src/runtime/tool-i18n.js");
 const runtimeIndex = read("src/runtime/index.js");
 const toolBoot = read("src/runtime/tool-boot.js");
 const siteChrome = read("src/components/site/SiteChrome.vue");
+const headerChrome = read("src/components/site/HeaderChrome.vue");
+const homepageBehavior = read("src/runtime/homepage-behavior.js");
+const siteChromeStyles = read("site-chrome.css");
+const siteNav3D = read("src/runtime/site-nav-3d.js");
 
 assert.match(runtimeIndex, /import "\.\/tool-i18n\.js";/, "Tool runtime must load the Traditional Chinese localization layer.");
 assert.match(i18n, /"Drop PDF files here": "將 PDF 檔案拖放到這裡"/, "Upload copy must have a Traditional Chinese translation.");
@@ -32,7 +36,17 @@ assert.match(i18n, /localizedPath\(nextLocale\)/, "Language changes must update 
 assert.ok(i18n.includes("\\/zh\\/pdf-tools"), "Traditional Chinese tool pages must use the verified /zh/ locale path.");
 assert.match(i18n, /routeLocale\(\) === "en"/, "The explicit English URL must remain an English entry point.");
 assert.match(siteChrome, /WPSToolI18n\?\.setLanguage\(link\.dataset\.lang \|\| "en"\)/, "Header and footer language choices must update the tool page.");
+assert.doesNotMatch(homepageBehavior, /headerLanguageButton\?\.addEventListener\("click"/, "Homepage must not bind a second click handler to the shared header language button.");
 assert.match(siteChrome, /win\.WPSToolI18n\?\.init\(\)/, "Tool pages must restore the saved language on startup.");
 assert.match(toolBoot, /global\.WPSToolI18n\?\.init\(\)/, "Runtime hero updates must not reset the localized document title.");
+assert.match(headerChrome, /class="nav-link nav-wps-ai" href="https:\/\/www\.wps\.ai" target="_blank" rel="noopener noreferrer"/, "The desktop header must provide a safe WPS AI link.");
+assert.match(headerChrome, /<img class="nav-wps-ai__mark" :src="asset\('images\/legacy\/wps-ai-mark\.svg'\)" alt="">/, "The WPS AI link must render the official-style WPS AI mark.");
+assert.match(headerChrome, /<span class="nav-wps-ai__label">WPS AI<\/span>/, "The WPS AI link must show a readable label beside the mark.");
+assert.match(siteChromeStyles, /@keyframes nav-wps-ai-breathe/, "The WPS AI link must use a breathing animation.");
+assert.match(siteChromeStyles, /prefers-reduced-motion: reduce/, "The WPS AI animation must respect reduced-motion preferences.");
+assert.match(siteNav3D, /nav-dropdown-footer nav-dropdown-footer--3d/, "The 3D dropdown footer must opt out of the divider treatment.");
+assert.match(siteNav3D, /nav-all-tools-link nav-all-tools-link--icon/, "The 3D dropdown must use the icon-style All Tools link.");
+assert.match(siteChromeStyles, /\.nav-dropdown-footer--3d \{[^}]*border-top: 0;/, "The 3D dropdown footer must not render a divider.");
+assert.match(siteChromeStyles, /\.nav-all-tools-link--icon/, "The 3D dropdown All Tools link must have icon-button styling.");
 
 console.log("Tool Traditional Chinese i18n contracts passed.");

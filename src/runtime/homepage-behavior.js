@@ -1367,12 +1367,6 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
         closeLanguageMenu();
       });
 
-      headerLanguageButton?.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const isOpen = headerLanguagePicker.classList.toggle("is-open");
-        headerLanguageButton.setAttribute("aria-expanded", String(isOpen));
-      });
-
       headerLanguagePicker?.addEventListener("click", (event) => {
         const option = event.target.closest(".header-language-menu a");
         if (!option) return;

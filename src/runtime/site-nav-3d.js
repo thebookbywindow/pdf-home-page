@@ -29,8 +29,10 @@
             </div>`;
         }).join("")}
       </div>
-      <div class="nav-dropdown-footer">
-        <a class="nav-all-tools-link" href="https://szdmt.com/en-US/all-products/" target="_blank" rel="noopener noreferrer">All Tools →</a>
+      <div class="nav-dropdown-footer nav-dropdown-footer--3d">
+        <a class="nav-all-tools-link nav-all-tools-link--icon" href="https://szdmt.com/en-US/all-products/" target="_blank" rel="noopener noreferrer">
+          <span>All Tools</span><span class="nav-all-tools-icon" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" /></svg></span>
+        </a>
       </div>
     `;
   }

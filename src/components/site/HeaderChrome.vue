@@ -141,6 +141,10 @@
     </div>
     <a class="nav-link" :href="siteHref('#')">Pricing</a>
     <a class="nav-link nav-extension" :href="siteHref('#')"><img :src="asset('images/legacy/Google plugin.svg')" alt="">PDF Extension</a>
+    <a class="nav-link nav-wps-ai" href="https://www.wps.ai" target="_blank" rel="noopener noreferrer" aria-label="Open WPS AI in a new tab">
+      <img class="nav-wps-ai__mark" :src="asset('images/legacy/wps-ai-mark.svg')" alt="">
+      <span class="nav-wps-ai__label">WPS AI</span>
+    </a>
   </nav>
   <div class="header-actions">
     <div class="header-language-picker">

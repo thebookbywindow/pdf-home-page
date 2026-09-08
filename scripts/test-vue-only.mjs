@@ -57,4 +57,8 @@ const homeComponent = fs.readFileSync(path.join(root, "src", "components", "home
 assert.match(homeComponent, /<SiteChrome part="header" \/>/);
 assert.match(homeComponent, /<SiteChrome part="footer" \/>/);
 
+const homepageBody = fs.readFileSync(path.join(root, "src", "components", "home", "homepage-body.html"), "utf8");
+assert.doesNotMatch(homepageBody, /<header\b/);
+assert.doesNotMatch(homepageBody, /<footer\b/);
+
 console.log(`PASS Vue-only layout contains ${toolDirectories.length} tools across ${localeRoots.length} locales.`);
