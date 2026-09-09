@@ -1014,37 +1014,7 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
       const footerLanguageMenu = languagePicker?.querySelector(".language-menu");
       const languageOptions = [
         ["en", "English"],
-        ["de", "Deutsch"],
-        ["nl", "Nederlands"],
-        ["fi", "Suomi"],
-        ["ru", "Русский"],
-        ["zh-tw", "繁體中文"],
-        ["es", "Español"],
-        ["pl", "Polski"],
-        ["sv", "Svenska"],
-        ["uk", "Українська"],
-        ["id", "Bahasa Indonesia"],
-        ["fr", "Français"],
-        ["pt", "Português"],
-        ["vi", "Tiếng Việt"],
-        ["he", "עברית"],
-        ["nb", "Bokmål"],
-        ["hr", "Hrvatski"],
-        ["ro", "Română"],
-        ["tr", "Türkçe"],
-        ["ar", "العربية"],
-        ["cs", "Čeština"],
-        ["it", "Italiano"],
-        ["sk", "Slovenčina"],
-        ["el", "Ελληνικά"],
-        ["th", "ไทย"],
-        ["da", "Dansk"],
-        ["hu", "Magyar"],
-        ["sr", "Srpski"],
-        ["bg", "Български"],
-        ["ko", "한국어"],
-        ["zh-cn", "简体中文"],
-        ["ja", "日本語"]
+        ["zh-tw", "繁體中文"]
       ];
       const languageNames = Object.fromEntries(languageOptions);
       const renderLanguageMenus = () => {
@@ -1072,6 +1042,7 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
 
       [
         ["WPS PDF Tools", { de: "WPS PDF Tools", fr: "Outils WPS PDF", es: "Herramientas WPS PDF", pt: "Ferramentas WPS PDF", it: "Strumenti WPS PDF", ja: "WPS PDF ツール", ko: "WPS PDF 도구", "zh-cn": "WPS PDF 工具", "zh-tw": "WPS PDF 工具" }],
+        ["PDF Tools", { de: "PDF-Werkzeuge", fr: "Outils PDF", es: "Herramientas PDF", pt: "Ferramentas PDF", it: "Strumenti PDF", ja: "PDF ツール", ko: "PDF 도구", "zh-cn": "PDF 工具", "zh-tw": "PDF 工具" }],
         ["Tools", { de: "Werkzeuge", fr: "Outils", es: "Herramientas", pt: "Ferramentas", it: "Strumenti", ja: "ツール", ko: "도구", "zh-cn": "工具", "zh-tw": "工具" }],
         ["3D Conversion", { de: "3D-Konvertierung", fr: "Conversion 3D", es: "Conversión 3D", pt: "Conversão 3D", it: "Conversione 3D", ja: "3D 変換", ko: "3D 변환", "zh-cn": "3D 格式转换", "zh-tw": "3D 格式轉換" }],
         ["Why Choose WPS PDF?", { de: "Warum WPS PDF?", fr: "Pourquoi WPS PDF ?", es: "¿Por qué WPS PDF?", pt: "Por que WPS PDF?", it: "Perché WPS PDF?", ja: "WPS PDF が選ばれる理由", ko: "WPS PDF를 선택하는 이유", "zh-cn": "为何选择 WPS PDF？", "zh-tw": "為何選擇 WPS PDF？" }],
@@ -1277,7 +1248,7 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
       const shouldTranslateTextNode = (node) => {
         const parent = node.parentElement;
         if (!parent || !node.nodeValue.trim()) return false;
-        return !parent.closest("script, style, svg, .material-symbols-rounded, .language-picker, .header-language-menu");
+        return !parent.closest("script, style, svg, .material-symbols-rounded, .language-picker, .header-language-picker, .header-language-menu");
       };
 
       const collectTranslatableTextNodes = () => {
@@ -1296,8 +1267,12 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
         activeLanguage = lang;
         const dictionary = i18n[lang] || {};
         translatableTextNodes.forEach(({ node, source }) => {
+          if (!node.isConnected) return;
           const target = translateSource(source, lang);
-          node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), target);
+          const current = node.nodeValue;
+          const trimmed = current.trim();
+          if (!trimmed || trimmed === target) return;
+          node.nodeValue = current.replace(trimmed, target);
         });
         applyLanguageTo(document);
         dockTrack?.querySelectorAll(".dock-item").forEach((item) => {
@@ -1328,7 +1303,7 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
       };
 
       const setLanguage = (lang) => {
-        const nextLang = languageNames[lang] ? lang : "en";
+        const nextLang = /^(zh-tw|zh-TW|zh-hant|zh-Hant|zh|zh-cn|zh-CN)$/.test(lang || "") ? "zh-tw" : "en";
         applyLanguage(nextLang);
         setFooterLanguageLabel(nextLang);
         document.querySelectorAll("[data-lang]").forEach((link) => {
@@ -1389,6 +1364,7 @@ const toolHref = (title) => (window.WPSToolRoutes ? WPSToolRoutes.getPageForTool
         closeDownloadDropdowns();
       });
 
+      window.WPSHomepageI18n = { setLanguage };
       collectTranslatableTextNodes();
       let savedLanguage = "en";
       try {

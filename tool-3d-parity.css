@@ -256,19 +256,91 @@ body:is(.tool-page--3d-parity, .tool-page--pdf-parity) {
   min-height: 38px;
   margin: 0 0 8px;
   padding: 0 16px;
-  justify-content: flex-end;
+  justify-content: stretch;
   box-sizing: border-box;
 }
 
 :is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-bar__row {
   display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   min-height: 38px;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  column-gap: 10px;
+  row-gap: 8px;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-bar__start {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 1 auto;
+  max-width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(89, 72, 243, 0.32);
+  border-radius: 19px;
+  background: #efeaff;
+  color: #2c2466;
+  font-size: 14px;
+  line-height: 22px;
+  cursor: default;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__mark {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__label {
+  min-width: 0;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #3d2ee8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__link:hover,
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__link:focus-visible {
+  color: #2918c4;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__external {
+  flex: 0 0 12px;
+  display: block;
+}
+
+:is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__tail {
+  color: inherit;
 }
 
 :is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-bar .quota-wrap {
   gap: 8px;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 :is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-bar .quota-badge {
@@ -1067,6 +1139,11 @@ body:is(.tool-page--3d-parity, .tool-page--pdf-parity) {
     max-width: calc(100vw - 152px);
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 0;
+  }
+
+  :is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-wps-ai__label {
+    white-space: normal;
   }
 
   :is(.tool-page--3d-parity, .tool-page--pdf-parity) .tool-quota-bar .quota-info-btn {

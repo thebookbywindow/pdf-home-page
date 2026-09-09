@@ -1,0 +1,25 @@
+<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wps-ai-official-g0" x1="0" y1="0.5" x2="1" y2="0.5" gradientTransform="matrix(-0.6211552250029445 1.130102033991861 -1.1222107890750574 -0.603473497016123 1.0918804017341333 0.23030818662244634)">
+      <stop offset="0" stop-color="#391ef0"/>
+      <stop offset="1" stop-color="#5dabff"/>
+    </linearGradient>
+    <linearGradient id="wps-ai-official-g1" x1="0" y1="0.5" x2="1" y2="0.5" gradientTransform="matrix(-1.1603561542763454 -2.029595748722483e-14 1.6849538795808504e-15 -1.0775765482488853 1.1221874503325953 0.5387882741244623)">
+      <stop offset="0" stop-color="#37b2fc"/>
+      <stop offset="1" stop-color="#2052fc"/>
+    </linearGradient>
+    <linearGradient id="wps-ai-official-g2" x1="0" y1="0.5" x2="1" y2="0.5" gradientTransform="matrix(-0.819979740677445 -0.8603650957330012 0.7293719576520754 -0.7384159647925725 0.45709711785879775 1.2338690791584153)">
+      <stop offset="0" stop-color="#ffaa8f"/>
+      <stop offset="1" stop-color="#ee00ff"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0.19 3.56)">
+    <path d="M9.6 0L14.8 0C15.09 0 15.32 0.23 15.32 0.52C15.32 0.59 15.3 0.67 15.27 0.74L8.2 15.33C7.73 16.28 6.77 16.88 5.72 16.88L0.52 16.88C0.23 16.88 0 16.65 0 16.36C0 16.29 0.02 16.21 0.05 16.14L7.12 1.55C7.59 0.6 8.55 0 9.6 0Z" fill="url(#wps-ai-official-g0)" fill-rule="nonzero"/>
+  </g>
+  <g transform="translate(8.28 3.56)">
+    <path d="M6.71 0C7 0 7.23 0.23 7.23 0.52C7.23 0.59 7.21 0.67 7.18 0.74L3.67 7.97L0 0.45C0.44 0.16 0.97 0 1.51 0L6.71 0Z" fill="url(#wps-ai-official-g1)" fill-rule="nonzero"/>
+  </g>
+  <g transform="translate(11.95 11.53)">
+    <path d="M8.5 1.55L11.71 8.17C11.83 8.42 11.73 8.73 11.47 8.86C11.4 8.89 11.32 8.91 11.24 8.91L6.05 8.91C4.99 8.91 4.03 8.31 3.57 7.36L0 0L6.02 0C7.08 0 8.04 0.6 8.5 1.55Z" fill="url(#wps-ai-official-g2)" fill-rule="evenodd"/>
+  </g>
+</svg>

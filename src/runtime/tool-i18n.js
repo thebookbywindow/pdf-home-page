@@ -107,6 +107,8 @@
     "WPS PDF compressor helps to reduce the PDF file size online without losing quality. Users can compress PDF files FREE in batch and customize compression settings to quickly and safely.": "WPS PDF 壓縮工具可在線上縮小 PDF 檔案大小，同時維持檔案品質。使用者可以免費批次壓縮 PDF，並自訂壓縮設定，快速又安全地完成處理。",
     "View quota options": "查看額度選項",
     "Sign in to get more free uses": "登入以獲得更多免費使用次數",
+    "Need more free uses? Visit": "次數不夠？訪問",
+    "to keep using for free": "繼續免費使用",
     "Sign in": "登入",
     "to get more free uses": "以獲得更多免費使用次數",
     "Get more uses": "獲得更多使用次數",
@@ -271,8 +273,12 @@
     });
   }
 
+  function isHomepage() {
+    return !routeLocale();
+  }
+
   function apply() {
-    if (!document.body) return;
+    if (!document.body || isHomepage()) return;
     collect(document.body);
     records.forEach((source, node) => {
       if (!node.isConnected) return;
@@ -323,6 +329,16 @@
   }
 
   function setLanguage(lang) {
+    if (isHomepage()) {
+      if (global.WPSHomepageI18n?.setLanguage) {
+        global.WPSHomepageI18n.setLanguage(lang);
+        return;
+      }
+      try {
+        localStorage.setItem("wpsPdfLanguage", lang);
+      } catch (_) {}
+      return;
+    }
     const nextLanguage = isTraditionalChinese(lang) ? "zh-tw" : "en";
     const nextLocale = nextLanguage === "zh-tw" ? "zh" : "en";
     if (routeLocale() && routeLocale() !== nextLocale) {
@@ -341,7 +357,7 @@
   }
 
   function init() {
-    if (!document.body) return;
+    if (!document.body || isHomepage()) return;
     if (!baseTitle) baseTitle = document.title;
     if (!observer) {
       observer = new MutationObserver(queueApply);

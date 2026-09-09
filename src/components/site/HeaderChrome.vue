@@ -153,14 +153,6 @@
       </button>
       <div class="nav-dropdown header-language-menu" id="header-language-menu" role="menu">
         <a class="is-active" :href="siteHref('#')" role="menuitem" data-lang="en">English</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="de">Deutsch</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="fr">Français</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="es">Español</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="pt">Português</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="it">Italiano</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="ja">日本語</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="ko">한국어</a>
-        <a :href="siteHref('#')" role="menuitem" data-lang="zh-cn">简体中文</a>
         <a :href="siteHref('#')" role="menuitem" data-lang="zh-tw">繁體中文</a>
       </div>
     </div>
