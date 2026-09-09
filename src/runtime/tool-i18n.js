@@ -112,6 +112,7 @@
     "Sign in": "登入",
     "to get more free uses": "以獲得更多免費使用次數",
     "Get more uses": "獲得更多使用次數",
+    "More free uses": "更多免費次數",
     "Drop PDF files here": "將 PDF 檔案拖放到這裡",
     "or click to select from your device": "或點擊從裝置選取",
     "Select PDF File": "選取 PDF 檔案",
@@ -193,6 +194,7 @@
     "Saved": "已節省",
     "Online:": "線上：",
     "uses left": "次剩餘",
+    "use left": "次剩餘",
     "Close": "關閉",
     "Previous tools": "上一組工具",
     "Next tools": "下一組工具",
@@ -228,9 +230,9 @@
     if (activeLanguage !== "zh-tw") return source;
     if (ZH_TW[source]) return ZH_TW[source];
     if (source.trim() === "to get more free uses") return "以獲得更多免費使用次數";
-    let match = source.match(/^Online:\s*(\d+)\s+uses left$/);
+    let match = source.match(/^Online:\s*(\d+)\s+uses? left$/);
     if (match) return `線上：${match[1]} 次剩餘`;
-    match = source.match(/^WPS Drive:\s*(\d+)\s+uses left$/);
+    match = source.match(/^WPS Drive:\s*(\d+)\s+uses? left$/);
     if (match) return `WPS Drive：${match[1]} 次剩餘`;
     match = source.match(/^Original:\s*(.+)$/);
     if (match) return `原始大小：${match[1]}`;

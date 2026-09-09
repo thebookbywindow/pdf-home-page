@@ -78,7 +78,7 @@ assert.match(workflowSource, /tryStartProcess\(\[sourceFile\], finishSign\)/);
 assert.match(workflowSource, /els\.fileInput\?\.addEventListener\("change"/);
 assert.match(linksSource, /function openSignIn\(\) \{[\s\S]*?WPSQuotaFlow[\s\S]*?\.login\?\./);
 assert.match(linksSource, /const clientQuotaText = document\.getElementById\("client-quota-text"\)/);
-assert.match(linksSource, /clientQuotaText\.textContent = `WPS Drive: \$\{state\.clientUsesRemaining\} uses left`/);
+assert.match(linksSource, /clientQuotaText\.textContent = `WPS Drive: \$\{quota\.formatUsesLeft\(state\.clientUsesRemaining\)\}`/);
 assert.match(quotaFlowSource, /STORAGE_KEY = "wps_pdf_quota_demo_v3"/);
 assert.match(quotaFlowSource, /loggedIn: false/);
 

@@ -49,8 +49,13 @@ assert.match(
 );
 assert.equal(
   quota.getQuotaSummary({ loggedIn: true, isPremium: false, usesRemaining: 1 }, { compact: true }).text,
-  "Online: <strong>1</strong> uses left",
+  "Online: <strong>1</strong> use left",
   "The signed-in free quota badge must match the official 1-use allowance."
+);
+assert.equal(
+  quota.getQuotaSummary({ loggedIn: true, isPremium: false, usesRemaining: 0 }, { compact: true }).text,
+  "Online: <strong>0</strong> uses left",
+  "Zero remaining uses must stay plural in English."
 );
 assert.equal(
   quota.getQuotaSummary({ isPremium: true, usesRemaining: 10 }, { compact: true }).text,

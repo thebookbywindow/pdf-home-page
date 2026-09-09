@@ -26,24 +26,23 @@ assert.match(i18n, /"Unlimited use with WPS Pro\+": "WPS Pro\+ 無限使用"/);
 assert.match(i18n, /"Download WPS Office to view and edit the converted file in WPS Drive\.": "下载 WPS Office，在 WPS Drive 中查看和编辑转换后的文件"/);
 assert.match(i18n, /"Upgrade": "升級"/);
 assert.match(i18n, /"Cancel Current Task\?": "取消目前工作？"/);
-assert.match(i18n, /source\.match\(\/\^Online:/, "Online quota must translate dynamic remaining-use text.");
+assert.match(i18n, /uses\? left/, "Online quota must translate singular and plural remaining-use text.");
 assert.match(i18n, /"Sign in": "登入"/, "Sign in action must be translated in Traditional Chinese.");
-assert.match(
-  i18n,
-  /"Need more free uses\? Visit": "次數不夠？訪問"/,
-  "Quota-bar WPS AI lead copy must have Traditional Chinese.",
-);
-assert.match(i18n, /"to keep using for free": "繼續免費使用"/, "Quota-bar WPS AI tail copy must explain free continued use.");
+assert.match(i18n, /"More free uses": "更多免費次數"/, "Quota-bar WPS AI CTA must have Traditional Chinese.");
 const toolPage = read("src/components/tool/ToolPage.vue");
-assert.match(toolPage, /class="tool-quota-wps-ai"/, "Official quota bar must keep a non-clickable WPS AI capsule.");
-assert.doesNotMatch(toolPage, /class="tool-quota-wps-ai" href=/, "The WPS AI capsule itself must not be a link.");
+assert.match(toolPage, /class="tool-quota-wps-ai"/, "Official quota bar must keep a WPS AI CTA left of the quota badge.");
+assert.match(toolPage, /class="tool-quota-wps-ai" href="https:\/\/www\.wps\.ai"/, "The More free uses control must open www.wps.ai.");
+assert.match(toolPage, /class="tool-quota-wps-ai__boom"/, "The CTA must include the pulsing burst graphic wrapper.");
 assert.match(
   toolPage,
   /asset\('images\/legacy\/wps-ai-logo-official\.svg'\)/,
   "Quota-bar mark must use the official www.wps.ai header logo asset.",
 );
 assert.match(toolPage, /title="https:\/\/www\.wps\.ai"/, "The site link must expose the www.wps.ai URL.");
-assert.match(toolPage, />\s*WPS\.AI\s*/, "The clickable label must show the WPS.AI domain.");
+assert.match(toolPage, />More free uses</, "The clickable label must be More free uses.");
+const parityCss = read("tool-3d-parity.css");
+assert.match(parityCss, /@keyframes tool-quota-wps-ai-pop/, "The CTA mark must pulse larger and smaller.");
+assert.match(parityCss, /@keyframes tool-quota-wps-ai-burst/, "The CTA must include an exploding ring animation.");
 assert.match(toolPage, /<QuotaControls :official="true" \/>/, "Local quota sign-in capsule must stay on the official tool page.");
 assert.match(
   read("src/components/tool/QuotaControls.vue"),

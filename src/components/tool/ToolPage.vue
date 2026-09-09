@@ -37,21 +37,18 @@
               </span>
               <span class="tool-task-toolbar__back-label">Back</span>
             </button>
-            <span class="tool-quota-wps-ai">
-              <img class="tool-quota-wps-ai__mark" :src="asset('images/legacy/wps-ai-logo-official.svg')" alt="" width="24" height="24">
-              <span class="tool-quota-wps-ai__label">
-                Need more free uses? Visit
-                <a class="tool-quota-wps-ai__link" href="https://www.wps.ai" target="_blank" rel="noopener noreferrer" title="https://www.wps.ai">
-                  WPS.AI
-                  <svg class="tool-quota-wps-ai__external" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
-                    <path d="M4.5 2H2.75A.75.75 0 0 0 2 2.75v6.5c0 .41.34.75.75.75h6.5c.41 0 .75-.34.75-.75V7.5M7 2h3m0 0v3m0-3L5.5 6.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
-                <span class="tool-quota-wps-ai__tail"> to keep using for free</span>
-              </span>
-            </span>
           </div>
-          <QuotaControls :official="true" />
+          <div class="tool-quota-bar__end">
+            <a class="tool-quota-wps-ai" href="https://www.wps.ai" target="_blank" rel="noopener noreferrer" title="https://www.wps.ai">
+              <span class="tool-quota-wps-ai__boom" aria-hidden="true">
+                <span class="tool-quota-wps-ai__ring"></span>
+                <span class="tool-quota-wps-ai__ring tool-quota-wps-ai__ring--delay"></span>
+                <img class="tool-quota-wps-ai__mark" :src="asset('images/legacy/wps-ai-logo-official.svg')" alt="" width="24" height="24">
+              </span>
+              <span class="tool-quota-wps-ai__label">More free uses</span>
+            </a>
+            <QuotaControls :official="true" />
+          </div>
         </div>
       </div>
 

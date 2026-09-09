@@ -238,7 +238,7 @@ assert.match(
   /href && button\.dataset\.clientOnly !== "true"/,
   "WPS Office quota results must not download the local converted file."
 );
-assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Drive: \$\{state\.clientUsesRemaining\} uses left`/, "The upload state must expose remaining WPS Drive uses.");
+assert.match(toolPageSource, /clientQuotaText\.textContent = `WPS Drive: \$\{Q\.formatUsesLeft\(state\.clientUsesRemaining\)\}`/, "The upload state must expose remaining WPS Drive uses.");
 assert.match(toolPageSource, /const showClientQuota = state\.loggedIn && !state\.isPremium/, "Guests must not receive a WPS Office quota hint.");
 assert.match(toolPageSource, /function isCompressShell\(/, "Compress flow must detect the official shell.");
 assert.match(toolPageSource, /function isOfficialShell\(/, "Quota bar in-flow must apply to every official pdf.wps.com shell.");

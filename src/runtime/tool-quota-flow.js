@@ -11,6 +11,14 @@
   const GUEST_MAX_MB = 10;
   const MEMBER_MAX_MB = 200;
 
+  function usesNoun(count) {
+    return Number(count) === 1 ? "use" : "uses";
+  }
+
+  function formatUsesLeft(count) {
+    return `${count} ${usesNoun(count)} left`;
+  }
+
   function loadState() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -129,6 +137,8 @@
     CLIENT_DAILY_LIMIT,
     GUEST_MAX_MB,
     MEMBER_MAX_MB,
+    usesNoun,
+    formatUsesLeft,
     getState() {
       return normalizeState(loadState());
     },
@@ -263,8 +273,8 @@
       const dailyLimit = dailyLimitFor(state);
       return {
         text: options.compact
-          ? `Online: <strong>${left}</strong> uses left`
-          : `<strong>${left}</strong> of ${dailyLimit} free uses left today`,
+          ? `Online: <strong>${left}</strong> ${usesNoun(left)} left`
+          : `<strong>${left}</strong> of ${dailyLimit} free ${usesNoun(left)} left today`,
         sub: null
       };
     },
